@@ -1,0 +1,92 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+	--foreground-rgb: 0, 0, 0;
+	--background-start-rgb: 214, 219, 220;
+	--background-end-rgb: 255, 255, 255;
+}
+
+@media (prefers-color-scheme: dark) {
+	:root {
+		--foreground-rgb: 255, 255, 255;
+		--background-start-rgb: 0, 0, 0;
+		--background-end-rgb: 0, 0, 0;
+	}
+}
+
+body {
+	color: rgb(var(--foreground-rgb));
+	// background: url()
+	// background: linear-gradient(
+	// 		to bottom,
+	// 		transparent,
+	// 		rgb(var(--background-end-rgb))
+	// 	)
+	// 	rgb(var(--background-start-rgb));
+}
+
+.container {
+	max-width: 640px;
+}
+.mobile-only {
+	@media screen and (min-width: 640px) {
+		display: none;
+	}
+}
+.desktop-only {
+	@media screen and (max-width: 640px) {
+		display: none;
+	}
+}
+.bg {
+	object-fit: cover;
+	position: relative;
+	z-index: -1;
+}
+.retreats {
+	.retreat {
+		// height: 200px;
+		background-color: rgba(255, 255, 255, 0.9);
+		display: flex;
+		padding: 15px;
+		.thumb {
+			width: 125px;
+			height: 125px;
+			min-width: 125px;
+			position: relative;
+			margin-right: 15px;
+			img {
+				object-fit: cover;
+				height: 100%;
+				width: 100%;
+				border: 2px solid #6d6d31;
+				overflow: hidden;
+				border-radius: 7px;
+			}
+		}
+		.date {
+			background-color: #956123;
+			color: white;
+			padding: 0 5px;
+			font-size: 14px;
+			// font-style: italic;
+		}
+		color: #6d6d31;
+		h2 {
+			font-size: 22px;
+			font-weight: bold;
+			margin-bottom: 5px;
+		}
+		h3 {
+			font-style: italic;
+			font-size: 12px;
+			font-weight: normal;
+		}
+		.col-span-5 {
+			height: 100%;
+			position: relative;
+		}
+	}
+}
