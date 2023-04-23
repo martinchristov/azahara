@@ -1,20 +1,15 @@
 import '@/styles/globals.scss'
 import Image from 'next/image'
+import { wrapper } from '@/utils/store'
+import { AnimatePresence } from 'framer-motion'
 
-const Layout = ({ children }) => {
+
+function App({ Component, pageProps, router }) {
   return (
-    <main className="min-h-screen">
-      <Image className="mobile-only bg" src="/bg.jpg" alt="bg" fill />
-      <Image className="desktop-only bg" src="/bg-desktop.jpg" alt="bg" fill />
-      {children}
-    </main>
+    <AnimatePresence mode="wait" initial={false}>
+      <Component {...pageProps} key={router.asPath} />
+    </AnimatePresence>
   )
 }
 
-export default function App({ Component, pageProps }) {
-  return (
-  <Layout>
-    <Component {...pageProps} />
-  </Layout>
-  )
-}
+export default wrapper.withRedux(App)

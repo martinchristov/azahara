@@ -3,23 +3,29 @@ import { Inter } from 'next/font/google'
 import { useEffect, useState } from 'react'
 import moment from 'moment'
 import Link from 'next/link'
+import { selectRetreatsState, setRetreatsState } from '../utils/retreatsSlice';
+import { useDispatch, useSelector } from "react-redux";
+import Layout from '@/components/layout'
 
 const inter = Inter({ subsets: ['latin'] })
 
 export default function Home() {
-  const [retreats, setRetreats] = useState([])
+  const retreatsState = useSelector(selectRetreatsState);
+  const dispatch = useDispatch();
   useEffect(() => {
-    fetch('https://azahara-admin.herokuapp.com/api/retreats?populate=*')
-    .then(d => d.json())
-    .then(d => {
-      setRetreats(d.data)
-      console.log(d)
-    })
+    if(retreatsState == null || retreatsState.length === 0){
+      fetch('https://azahara-admin.herokuapp.com/api/retreats?populate=*')
+      .then(d => d.json())
+      .then(d => {
+        dispatch(setRetreatsState(d.data))
+      })
+    }
   }, [])
   return (
+    <Layout>
     <div className="container mx-auto">
       <div className="retreats">
-      {retreats.map(retreat => {
+      {retreatsState?.map(retreat => {
         const { Title, Subtitle, Starts, Ends, Cover, Slug } = retreat.attributes
         return (
           <Link href={`/retreats/${Slug}`} key={retreat.id}>
@@ -42,5 +48,6 @@ export default function Home() {
       })}
       </div>
     </div>
+    </Layout>
   )
 }
