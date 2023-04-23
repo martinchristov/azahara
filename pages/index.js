@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import { Inter } from 'next/font/google'
 import { useEffect, useState } from 'react'
-import moment from 'moment'
+import dayjs from 'dayjs'
 import Link from 'next/link'
 import { selectRetreatsState, setRetreatsState } from '../utils/retreatsSlice';
 import { useDispatch, useSelector } from "react-redux";
@@ -38,7 +38,7 @@ export default function Home() {
               </div>
               <div className="col justify-center flex flex-col">
                 <div className='flex'>
-                  <div className="date rounded-sm">{moment(Starts, 'YYYY-MM-DD').format('MMM DD')} - {moment(Ends, 'YYYY-MM-DD').format('MMM DD')}</div>
+                  <div className="date rounded-sm">{dayjs(Starts, 'YYYY-MM-DD').format('MMM DD')} - {dayjs(Ends, 'YYYY-MM-DD').format('MMM DD')}</div>
                 </div>
                 <h1>{Title}</h1>
                 <h5>{Subtitle}</h5>

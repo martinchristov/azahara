@@ -13,6 +13,7 @@
     "@reduxjs/toolkit": "^1.9.5",
     "antd": "^5.4.4",
     "autoprefixer": "10.4.14",
+    "dayjs": "^1.11.7",
     "eslint": "8.38.0",
     "eslint-config-next": "13.3.0",
     "framer-motion": "^10.12.4",

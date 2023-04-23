@@ -1,6 +1,6 @@
 import Layout from "@/components/layout";
 import { selectRetreatsState } from "@/utils/retreatsSlice";
-import moment from "moment";
+import dayjs from "dayjs";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -29,15 +29,20 @@ export default function RetreatView(props) {
   return (
     <Layout>
       <div className="container mx-auto">
-        <FullView data={data} />
+        <FullView {...{data, setData}} />
       </div>
     </Layout>
   )
 }
 
-const FullView = ({ data }) => {
+const FullView = ({ data, setData }) => {
+  const [booking, setBooking] = useState({ checkIn: data?.attributes?.Starts, checkOut: data?.attributes?.Ends, adults: 1, children: 0, room: null })
   if(!data){
     return <div>Loading...</div>
+  }
+  const handleUpdateBooking = (field) => (e, v) => {
+    console.log(e, v)
+
   }
   const { Title, Subtitle, Cover, Starts, Ends, Description } = data.attributes
   return (
@@ -50,7 +55,7 @@ const FullView = ({ data }) => {
         </div>
         <div className="col justify-center flex flex-col">
           <div className='flex'>
-            <div className="date rounded-sm">{moment(Starts, 'YYYY-MM-DD').format('MMM DD')} - {moment(Ends, 'YYYY-MM-DD').format('MMM DD')}</div>
+            <div className="date rounded-sm">{dayjs(Starts, 'YYYY-MM-DD').format('MMM DD')} - {dayjs(Ends, 'YYYY-MM-DD').format('MMM DD')}</div>
           </div>
           <h1>{Title}</h1>
           <h5>{Subtitle}</h5>
@@ -63,21 +68,21 @@ const FullView = ({ data }) => {
         <div className="flex grid grid-flow-col auto-rows-max gap-x-1.5">
           <div className="flex flex-col">
             <div className="label">Check in</div>
-            <DatePicker onChange={() => {}} />
+            <DatePicker value={dayjs(booking.checkIn, 'YYYY-MM-DD')} format="DD MMM" onChange={handleUpdateBooking('checkIn')} />
           </div>
           <div className="flex flex-col">
             <div className="label">Check out</div>
-            <DatePicker onChange={() => {}} />
+            <DatePicker value={dayjs(booking.checkOut, 'YYYY-MM-DD')} format="DD MMM" onChange={handleUpdateBooking('checkOut')} />
           </div>
         </div>
         <div className="flex grid grid-flow-col auto-rows-max gap-x-1.5 mt-3">
           <div className="flex flex-col">
             <div className="label">Adults</div>
-            <Amount value={1} min={1} />
+            <Amount value={booking.adults} min={1} onChange={handleUpdateBooking('adults')} />
           </div>
           <div className="flex flex-col">
             <div className="label">Children (5+)</div>
-            <Amount value={0} min={0} />
+            <Amount value={booking.children} min={0} onChange={handleUpdateBooking('children')} />
           </div>
         </div>
         <ul className="feats">
@@ -85,7 +90,7 @@ const FullView = ({ data }) => {
           <li><Image src="/meal.svg" alt="bed" width={18} height={18} /> Meals Included</li>
         </ul>
       </div>
-      <Button type="primary" size="large">Choose Accommodation</Button>
+      <Button className="next-btn" type="primary" size="large">Choose Accommodation</Button>
     </div>
   )
 }
