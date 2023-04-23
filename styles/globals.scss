@@ -2,6 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
+$primary: #6d6d31;
+
 :root {
 	--foreground-rgb: 0, 0, 0;
 	--background-start-rgb: 214, 219, 220;
@@ -63,7 +65,7 @@ body {
 			object-fit: cover;
 			height: 100%;
 			width: 100%;
-			border: 2px solid #6d6d31;
+			border: 2px solid $primary;
 			overflow: hidden;
 			border-radius: 7px;
 		}
@@ -75,7 +77,7 @@ body {
 		font-size: 14px;
 		margin-bottom: 5px;
 	}
-	color: #6d6d31;
+	color: $primary;
 	.header {
 		h1 {
 			font-size: 1.5em;
@@ -94,6 +96,7 @@ body {
 		position: relative;
 	}
 	&.full {
+		min-height: calc(100vh - 100px);
 		hr {
 			margin: 1.3em 0;
 			border-color: rgba(109, 109, 49, 0.19);
@@ -147,5 +150,34 @@ body {
 			font-size: 18px;
 			font-style: normal;
 		}
+		.full-details {
+			h3 {
+				font-size: 1.5em;
+				margin-bottom: 0.5em;
+			}
+			.label {
+				font-size: 0.88em;
+			}
+		}
+		.amount {
+			.ant-btn {
+				font-size: 1.5em;
+				color: $primary;
+				line-height: 0;
+				&[disabled] {
+					color: #ccc;
+				}
+			}
+			.value {
+				line-height: 2.4;
+				font-weight: 500;
+				margin: 0 0.5em;
+				color: #3a3a3a;
+			}
+		}
+	}
+	.ant-btn.ant-btn-primary {
+		margin-top: auto;
+		background-color: $primary;
 	}
 }
