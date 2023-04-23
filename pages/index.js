@@ -30,17 +30,19 @@ export default function Home() {
         return (
           <Link href={`/retreats/${Slug}`} key={retreat.id}>
           <div className="retreat bg-whitepx-4 sm:px-6 sm:pt-8 rounded-lg m-6">
-            <div className="thumb col">
-              {Cover.data != null &&
-              <Image src={Cover.data.attributes.formats.small.url} fill alt="cover" />
-              }
-            </div>
-            <div className="col">
-              <div className='flex'>
-                <div className="date rounded-sm">{moment(Starts, 'YYYY-MM-DD').format('MMM DD')} - {moment(Ends, 'YYYY-MM-DD').format('MMM DD')}</div>
+            <div className="header flex">
+              <div className="thumb col">
+                {Cover.data != null &&
+                <Image src={Cover.data.attributes.formats.small.url} fill alt="cover" />
+                }
               </div>
-              <h2>{Title}</h2>
-              <h3>{Subtitle}</h3>
+              <div className="col justify-center flex flex-col">
+                <div className='flex'>
+                  <div className="date rounded-sm">{moment(Starts, 'YYYY-MM-DD').format('MMM DD')} - {moment(Ends, 'YYYY-MM-DD').format('MMM DD')}</div>
+                </div>
+                <h1>{Title}</h1>
+                <h5>{Subtitle}</h5>
+              </div>
             </div>
           </div>
           </Link>

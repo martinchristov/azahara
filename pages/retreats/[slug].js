@@ -1,9 +1,11 @@
 import Layout from "@/components/layout";
 import { selectRetreatsState } from "@/utils/retreatsSlice";
-import { wrapper } from "@/utils/store";
+import moment from "moment";
+import Image from "next/image";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import Markdown from 'react-markdown'
 
 export default function RetreatView(props) {
   const [data, setData] = useState(null)
@@ -22,19 +24,53 @@ export default function RetreatView(props) {
       })
     }
   }, [])
-  console.log(data)
   return (
     <Layout>
       <div className="container mx-auto">
-        <div className="bg-white px-4 sm:px-6 sm:pt-8 rounded-lg m-6">retreat</div>
+        <FullView data={data} />
       </div>
     </Layout>
   )
 }
 
-// export const getServerSideProps = wrapper.getServerSideProps($store => ({req, res, ...etc}) => {
-//   console.log($store.getState())
-//   console.log(etc)
-//   // const { store } = wrapper.useWrappedStore(selectRetreatsState)
-//   // console.log(store)
-// });
+const FullView = ({ data }) => {
+  if(!data){
+    return <div>Loading...</div>
+  }
+  const { Title, Subtitle, Cover, Starts, Ends, Description } = data.attributes
+  return (
+    <div className="retreat full bg-whitepx-4 sm:px-6 sm:pt-8 rounded-lg m-6">
+      <div className="flex header">
+        <div className="thumb col">
+          {Cover?.data != null &&
+          <Image src={Cover.data.attributes.formats.small.url} fill alt="cover" />
+          }
+        </div>
+        <div className="col justify-center flex flex-col">
+          <div className='flex'>
+            <div className="date rounded-sm">{moment(Starts, 'YYYY-MM-DD').format('MMM DD')} - {moment(Ends, 'YYYY-MM-DD').format('MMM DD')}</div>
+          </div>
+          <h1>{Title}</h1>
+          <h5>{Subtitle}</h5>
+        </div>
+      </div>
+      <div className="mt-6">
+        <div className="desc"><Markdown>{Description}</Markdown></div>
+        <ul className="feats">
+          <li><Image src="/bed.svg" alt="bed" width={18} height={18} /> 4 Nights</li>
+          <li><Image src="/meal.svg" alt="bed" width={18} height={18} /> Meals Included</li>
+        </ul>
+        <hr />
+        <h3>Booking Details</h3>
+        <div className="flex grid grid-flow-col auto-rows-max">
+          <div className="flex flex-vertical">
+            <div>Check in</div>
+          </div>
+          <div className="flex flex-vertical">
+            <div>Check out</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
