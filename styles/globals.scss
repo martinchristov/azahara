@@ -171,13 +171,18 @@ body {
 			.value {
 				line-height: 2.4;
 				font-weight: 500;
-				margin: 0 0.5em;
+				margin: 0;
 				color: #3a3a3a;
+				width: 20px;
+				text-align: center;
 			}
 		}
 	}
 	.next-btn {
 		margin-top: auto;
 		background-color: $primary;
+		&:hover {
+			background-color: lighten($primary, 30%);
+		}
 	}
 }

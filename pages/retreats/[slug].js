@@ -9,11 +9,12 @@ import Markdown from 'react-markdown'
 import { Button, DatePicker } from "antd";
 import { MinusSquareOutlined, PlusSquareOutlined } from "@ant-design/icons";
 
+const { RangePicker } = DatePicker;
+
 export default function RetreatView(props) {
   const [data, setData] = useState(null)
   const router = useRouter()
   const retreatsState = useSelector(selectRetreatsState);
-  // console.log(retreatsState)
   useEffect(() => {
     if((retreatsState != null && retreatsState.length > 0)){
       setData(retreatsState.find(item => item.attributes.Slug === router.query.slug))
@@ -29,7 +30,7 @@ export default function RetreatView(props) {
   return (
     <Layout>
       <div className="container mx-auto">
-        <FullView {...{data, setData}} />
+        {data && <FullView {...{data, setData}} />}
       </div>
     </Layout>
   )
@@ -40,10 +41,12 @@ const FullView = ({ data, setData }) => {
   if(!data){
     return <div>Loading...</div>
   }
-  const handleUpdateBooking = (field) => (e, v) => {
-    console.log(e, v)
-
+  const handleUpdateBooking = (field) => (value) => {
+    const $booking = {...booking}
+    $booking[field] = field.indexOf('check') === 0 ? value.format('YYYY-MM-DD') : value
+    setBooking($booking)
   }
+  const now = dayjs()
   const { Title, Subtitle, Cover, Starts, Ends, Description } = data.attributes
   return (
     <div className="retreat full bg-whitepx-4 sm:px-6 sm:pt-8 rounded-lg m-6 flex flex-col">
@@ -68,13 +71,16 @@ const FullView = ({ data, setData }) => {
         <div className="flex grid grid-flow-col auto-rows-max gap-x-1.5">
           <div className="flex flex-col">
             <div className="label">Check in</div>
-            <DatePicker value={dayjs(booking.checkIn, 'YYYY-MM-DD')} format="DD MMM" onChange={handleUpdateBooking('checkIn')} />
+            <DatePicker value={dayjs(booking.checkIn, 'YYYY-MM-DD')} disabledDate={(date) => date.valueOf() < now.valueOf() || date.valueOf() > dayjs(booking.checkOut, 'YYYY-MM-DD')} format="DD MMM" onChange={handleUpdateBooking('checkIn')} />
           </div>
           <div className="flex flex-col">
             <div className="label">Check out</div>
-            <DatePicker value={dayjs(booking.checkOut, 'YYYY-MM-DD')} format="DD MMM" onChange={handleUpdateBooking('checkOut')} />
+            <DatePicker value={dayjs(booking.checkOut, 'YYYY-MM-DD')} disabledDate={(date) => date.valueOf() < dayjs(booking.checkIn, 'YYYY-MM-DD')} format="DD MMM" onChange={handleUpdateBooking('checkOut')} />
           </div>
         </div>
+        {/* <div>
+          <RangePicker value={[dayjs(booking.checkIn, 'YYYY-MM-DD'), dayjs(booking.checkOut, 'YYYY-MM-DD')]} format="YYYY-MM-DD" placeholder={['Check In', 'Check Out']} />
+        </div> */}
         <div className="flex grid grid-flow-col auto-rows-max gap-x-1.5 mt-3">
           <div className="flex flex-col">
             <div className="label">Adults</div>
@@ -86,7 +92,7 @@ const FullView = ({ data, setData }) => {
           </div>
         </div>
         <ul className="feats">
-          <li><Image src="/bed.svg" alt="bed" width={18} height={18} /> 4 Nights</li>
+          <li><Image src="/bed.svg" alt="bed" width={18} height={18} /> {dayjs(booking.checkOut).diff(booking.checkIn, 'day', false)} Nights</li>
           <li><Image src="/meal.svg" alt="bed" width={18} height={18} /> Meals Included</li>
         </ul>
       </div>
@@ -95,12 +101,12 @@ const FullView = ({ data, setData }) => {
   )
 }
 
-const Amount = ({ value = 1, min = 0 }) => {
+const Amount = ({ value = 1, min = 0, onChange }) => {
   return (
     <div className="flex amount">
-      <Button type="ghost" size="large" icon={<PlusSquareOutlined />}></Button>
+      <Button onClick={() => { onChange(value + 1) }} type="ghost" size="large" icon={<PlusSquareOutlined />}></Button>
       <div className="value">{value}</div>
-      <Button type="ghost" size="large" disabled={value <= min} icon={<MinusSquareOutlined />}></Button>
+      <Button onClick={() => { if(value > min) onChange(value - 1) }} type="ghost" size="large" disabled={value <= min} icon={<MinusSquareOutlined />}></Button>
     </div>
   )
 }
