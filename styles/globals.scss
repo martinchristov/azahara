@@ -170,6 +170,25 @@ body {
 			background-color: lighten($primary, 30%);
 		}
 	}
+
+	.transportation {
+		h4 {
+			margin-top: -5px;
+			margin-bottom: 10px;
+		}
+		.ant-radio-button-wrapper-checked {
+			color: $primary;
+			border-color: $primary;
+		}
+		p {
+			padding-top: 6px;
+			padding-bottom: 10px;
+			small {
+				font-size: 10px;
+			}
+			line-height: 12px;
+		}
+	}
 }
 ul.feats {
 	display: flex;

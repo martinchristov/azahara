@@ -6,7 +6,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import Markdown from 'react-markdown'
-import { Button, DatePicker } from "antd";
+import { Button, DatePicker, Radio } from "antd";
 import { MinusSquareOutlined, PlusSquareOutlined } from "@ant-design/icons";
 import { motion } from "framer-motion";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -55,6 +55,7 @@ const FullView = ({ data }) => {
   }
   const now = dayjs()
   const { Title, Subtitle, Cover, Starts, Ends, Description } = data.attributes
+  console.log(booking)
   return (
 
     <motion.div
@@ -97,9 +98,6 @@ const FullView = ({ data }) => {
             <DatePicker value={dayjs(booking.checkOut, 'YYYY-MM-DD')} disabledDate={(date) => date.valueOf() < dayjs(booking.checkIn, 'YYYY-MM-DD')} format="DD MMM" onChange={handleUpdateBooking('checkOut')} />
           </div>
         </div>
-        {/* <div>
-          <RangePicker value={[dayjs(booking.checkIn, 'YYYY-MM-DD'), dayjs(booking.checkOut, 'YYYY-MM-DD')]} format="YYYY-MM-DD" placeholder={['Check In', 'Check Out']} />
-        </div> */}
         <div className="flex grid grid-flow-col auto-rows-max gap-x-1.5 mt-3">
           <div className="flex flex-col">
             <div className="label">Adults</div>
@@ -114,10 +112,34 @@ const FullView = ({ data }) => {
           <li><Image src="/bed.svg" alt="bed" width={18} height={18} /> {dayjs(booking.checkOut).diff(booking.checkIn, 'day', false)} Nights</li>
           <li><Image src="/meal.svg" alt="bed" width={18} height={18} /> Meals Included</li>
         </ul>
+        <hr />
+        <div className="transportation">
+          <h4>Transportation to venue</h4>
+          <Radio.Group value={booking.pickup} onChange={(e, v) => { handleUpdateBooking('pickup')(e.target.value) }}>
+            <Radio.Button value={true}>Airport pickup</Radio.Button>
+            <Radio.Button value={false}>Bus, taxi or other</Radio.Button>
+          </Radio.Group>
+          {booking.pickup &&
+          <p>
+            <small>We offer an airport pickup service charged separately. The cost starts from $100 from Malaga and $70 from Granada and depends on number of passengers.</small>
+          </p>
+          }
+          {(booking.pickup === false) &&
+          <p>
+            <small>Information on how to get the bus will be shared on your email after booking.</small>
+          </p>
+          }
+        </div>
       </div>
       <Button className="next-btn" type="primary" size="large" onClick={() => setStep(2)}>Choose Accommodation</Button>
     </div>
+    <RoomsView {...{setStep}} />
+    </motion.div>
+  )
+}
 
+const RoomsView = ({ setStep }) => {
+  return (
     <div className="rooms-view">
       <div className="px-4 sm:px-6 sm:pt-8 rounded-lg m-6 flex flex-col">
         <div className="flex">
@@ -149,7 +171,6 @@ const FullView = ({ data }) => {
         </ul>
       </div>
     </div>
-    </motion.div>
   )
 }
 
