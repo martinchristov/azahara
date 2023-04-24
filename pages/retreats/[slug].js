@@ -8,6 +8,7 @@ import { useSelector } from "react-redux";
 import Markdown from 'react-markdown'
 import { Button, DatePicker } from "antd";
 import { MinusSquareOutlined, PlusSquareOutlined } from "@ant-design/icons";
+import { motion } from "framer-motion";
 
 const { RangePicker } = DatePicker;
 
@@ -29,15 +30,16 @@ export default function RetreatView(props) {
   }, [])
   return (
     <Layout>
-      <div className="container mx-auto">
-        {data && <FullView {...{data, setData}} />}
+      <div className="container mx-auto overflow-hidden">
+        {data && <FullView {...{ data }} />}
       </div>
     </Layout>
   )
 }
 
-const FullView = ({ data, setData }) => {
+const FullView = ({ data }) => {
   const [booking, setBooking] = useState({ checkIn: data?.attributes?.Starts, checkOut: data?.attributes?.Ends, adults: 1, children: 0, room: null })
+  const [step, setStep] = useState(1)
   if(!data){
     return <div>Loading...</div>
   }
@@ -49,7 +51,19 @@ const FullView = ({ data, setData }) => {
   const now = dayjs()
   const { Title, Subtitle, Cover, Starts, Ends, Description } = data.attributes
   return (
-    <div className="retreat full bg-whitepx-4 sm:px-6 sm:pt-8 rounded-lg m-6 flex flex-col">
+
+    <motion.div
+      className="relative"
+      animate={{
+        x: -(step - 1) * window.innerWidth
+      }}
+      transition={{
+        type: "spring",
+        stiffness: 270,
+        damping: 30,
+      }}
+    >
+    <div className="retreat full bg-white px-4 sm:px-6 sm:pt-8 rounded-lg m-6 flex flex-col">
       <div className="flex header">
         <div className="thumb col">
           {Cover?.data != null &&
@@ -96,8 +110,31 @@ const FullView = ({ data, setData }) => {
           <li><Image src="/meal.svg" alt="bed" width={18} height={18} /> Meals Included</li>
         </ul>
       </div>
-      <Button className="next-btn" type="primary" size="large">Choose Accommodation</Button>
+      <Button className="next-btn" type="primary" size="large" onClick={() => setStep(2)}>Choose Accommodation</Button>
     </div>
+
+    <div className="rooms-view">
+      <div className="bg-white px-4 sm:px-6 sm:pt-8 rounded-lg m-6 flex flex-col">
+        <div className="flex">
+          <Button onClick={() => setStep(1)}>back</Button>
+        </div>
+        <h4>Select Accommodation</h4>
+        <ul className="results">
+          <li>
+            <div className="gallery" />
+            <div className="flex grid grid-col-12">
+              <div className="col-7 flex flex-col">
+                <h3>Casa Aisha</h3>
+                <ul className="flex">
+                  <li>Sleeps 4</li>
+                </ul>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+    </motion.div>
   )
 }
 
