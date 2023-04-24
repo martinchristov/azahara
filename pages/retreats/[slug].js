@@ -9,6 +9,11 @@ import Markdown from 'react-markdown'
 import { Button, DatePicker } from "antd";
 import { MinusSquareOutlined, PlusSquareOutlined } from "@ant-design/icons";
 import { motion } from "framer-motion";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Pagination } from "swiper"
+
+import "swiper/css";
+import "swiper/css/pagination";
 
 const { RangePicker } = DatePicker;
 
@@ -122,7 +127,10 @@ const FullView = ({ data }) => {
         <ul className="results">
           <li>
             <div className="gallery">
-              <Image src="https://res.cloudinary.com/dnqihasfp/image/upload/v1682332677/small_casa_aisha_f99ca5f2db.jpg" alt="g1" fill />
+              <Swiper pagination={true} modules={[Pagination]} className="mySwiper">
+                <SwiperSlide><Image src="https://res.cloudinary.com/dnqihasfp/image/upload/v1682332677/small_casa_aisha_f99ca5f2db.jpg" alt="g1" fill /></SwiperSlide>
+                <SwiperSlide><Image src="https://res.cloudinary.com/dnqihasfp/image/upload/v1682332677/small_casa_aisha_f99ca5f2db.jpg" alt="g1" fill /></SwiperSlide>
+              </Swiper>
             </div>
             <div className="flex grid grid-cols-12 p-2">
               <div className="col-span-8 flex flex-col">

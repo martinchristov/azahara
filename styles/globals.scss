@@ -210,8 +210,29 @@ ul.feats {
 			background-color: #fff;
 			.gallery {
 				width: 100%;
-				height: 100px;
+				height: 130px;
 				position: relative;
+				.swiper {
+					height: 100%;
+				}
+				.swiper-pagination {
+					bottom: 0;
+					.swiper-pagination-bullet {
+						background-color: rgba(255, 255, 255, 1);
+						opacity: 0.4;
+						&.swiper-pagination-bullet-active {
+							opacity: 1;
+						}
+					}
+				}
+				.swiper-slide {
+					img {
+						display: block;
+						width: 100%;
+						height: 100%;
+						object-fit: cover;
+					}
+				}
 			}
 			h3 {
 				color: #956123;

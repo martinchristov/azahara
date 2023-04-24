@@ -26,6 +26,7 @@
     "react-markdown": "^8.0.7",
     "react-redux": "^8.0.5",
     "sass": "^1.62.0",
+    "swiper": "^9.2.4",
     "tailwindcss": "3.3.1"
   }
 }
