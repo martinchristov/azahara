@@ -63,7 +63,7 @@ const FullView = ({ data }) => {
         damping: 30,
       }}
     >
-    <div className="retreat full bg-white px-4 sm:px-6 sm:pt-8 rounded-lg m-6 flex flex-col">
+    <div className="retreat full px-4 sm:px-6 sm:pt-8 rounded-lg m-6 flex flex-col">
       <div className="flex header">
         <div className="thumb col">
           {Cover?.data != null &&
@@ -114,20 +114,27 @@ const FullView = ({ data }) => {
     </div>
 
     <div className="rooms-view">
-      <div className="bg-white px-4 sm:px-6 sm:pt-8 rounded-lg m-6 flex flex-col">
+      <div className="px-4 sm:px-6 sm:pt-8 rounded-lg m-6 flex flex-col">
         <div className="flex">
           <Button onClick={() => setStep(1)}>back</Button>
         </div>
-        <h4>Select Accommodation</h4>
+        <h4>Choose Accommodation</h4>
         <ul className="results">
           <li>
-            <div className="gallery" />
-            <div className="flex grid grid-col-12">
-              <div className="col-7 flex flex-col">
+            <div className="gallery">
+              <Image src="https://res.cloudinary.com/dnqihasfp/image/upload/v1682332677/small_casa_aisha_f99ca5f2db.jpg" alt="g1" fill />
+            </div>
+            <div className="flex grid grid-cols-12 p-2">
+              <div className="col-span-8 flex flex-col">
                 <h3>Casa Aisha</h3>
-                <ul className="flex">
+                <ul className="feats">
                   <li>Sleeps 4</li>
+                  <li>3 Beds</li>
                 </ul>
+              </div>
+              <div className="col-span-4 flex flex-col prices">
+                <strong>$300</strong>
+                <small>$130 per night</small>
               </div>
             </div>
           </li>
