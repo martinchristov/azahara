@@ -6,7 +6,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import Markdown from 'react-markdown'
-import { Button, DatePicker, Radio } from "antd";
+import { Button, DatePicker, Form, Input, Radio } from "antd";
 import { LeftOutlined, MinusSquareOutlined, PlusSquareOutlined } from "@ant-design/icons";
 import { motion } from "framer-motion";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -26,7 +26,7 @@ export default function RetreatView(props) {
       setData(retreatsState.find(item => item.attributes.Slug === router.query.slug))
     } else {
       // initial fetch all has not been made (view is accessed directly)
-      fetch(`https://azahara-admin.herokuapp.com/api/retreats?filters\[Slug\][$eq]=${router.query.slug}`)
+      fetch(`https://azahara-admin.herokuapp.com/api/retreats?filters\[Slug\][$eq]=${router.query.slug}&populate=*`)
       .then(d => d.json())
       .then(d => {
         setData(d.data[0])
@@ -35,10 +35,29 @@ export default function RetreatView(props) {
   }, [])
   return (
     <Layout>
-      <div className="container mx-auto overflow-hidden">
+      <div className="container mx-auto">
         {data && <FullView {...{ data }} />}
       </div>
     </Layout>
+  )
+}
+
+const RetreatHeader = ({ data: { Cover, Starts, Ends, Title, Subtitle }}) => {
+  return (
+    <div className="flex retreat-header">
+      <div className="thumb col">
+        {Cover?.data != null &&
+        <Image src={Cover.data.attributes.formats.small.url} fill alt="cover" />
+        }
+      </div>
+      <div className="col justify-center flex flex-col">
+        <div className='flex'>
+          <div className="date rounded-sm">{dayjs(Starts, 'YYYY-MM-DD').format('MMM DD')} - {dayjs(Ends, 'YYYY-MM-DD').format('MMM DD')}</div>
+        </div>
+        <h1>{Title}</h1>
+        <h5>{Subtitle}</h5>
+      </div>
+    </div>
   )
 }
 
@@ -54,7 +73,7 @@ const FullView = ({ data }) => {
     setBooking($booking)
   }
   const now = dayjs()
-  const { Title, Subtitle, Cover, Starts, Ends, Description } = data.attributes
+  console.log(data.attributes)
   return (
 
     <motion.div
@@ -69,22 +88,9 @@ const FullView = ({ data }) => {
       }}
     >
     <div className="retreat full px-4 sm:px-6 sm:pt-8 rounded-lg m-6 flex flex-col">
-      <div className="flex header">
-        <div className="thumb col">
-          {Cover?.data != null &&
-          <Image src={Cover.data.attributes.formats.small.url} fill alt="cover" />
-          }
-        </div>
-        <div className="col justify-center flex flex-col">
-          <div className='flex'>
-            <div className="date rounded-sm">{dayjs(Starts, 'YYYY-MM-DD').format('MMM DD')} - {dayjs(Ends, 'YYYY-MM-DD').format('MMM DD')}</div>
-          </div>
-          <h1>{Title}</h1>
-          <h5>{Subtitle}</h5>
-        </div>
-      </div>
+      <RetreatHeader data={data.attributes} />
       <div className="mt-6 full-details">
-        <div className="desc"><Markdown>{Description}</Markdown></div>
+        <div className="desc"><Markdown>{data.attributes.Description}</Markdown></div>
         <hr />
         <h3>Booking Details</h3>
         <div className="flex grid grid-flow-col auto-rows-max gap-x-1.5">
@@ -132,8 +138,8 @@ const FullView = ({ data }) => {
       </div>
       <Button className="next-btn" type="primary" size="large" onClick={() => setStep(2)}>Choose Accommodation</Button>
     </div>
-    <RoomsView {...{setStep}} />
-    <CheckoutView {...{setStep}} />
+    <RoomsView {...{ setStep }} />
+    <CheckoutView {...{ setStep, data: data.attributes, booking }} />
     </motion.div>
   )
 }
@@ -174,14 +180,63 @@ const RoomsView = ({ setStep }) => {
   )
 }
 
-const CheckoutView = ({ setStep }) => {
+const CheckoutView = ({ setStep, data, booking }) => {
+  const [form] = Form.useForm();
   return (
     <div className="checkout-view">
       <div className="px-4 sm:px-6 sm:pt-8 rounded-lg m-6 flex flex-col">
         <div className="flex relative mt-3">
           <Button onClick={() => setStep(2)} type="link" size="large" className="back-btn"><LeftOutlined /></Button>
         </div>
-        <h4>Complete Your Booking</h4>
+        {/* <h4>Complete Your Booking</h4> */}
+        <RetreatHeader data={data} />
+        <hr />
+        <div className="details">
+          <h4>Booking details</h4>
+          <ul>
+            <li>
+              <span>Dates</span>
+              <strong>{dayjs(booking.checkIn).format('DD MMM')} - {dayjs(booking.checkOut).format('DD MMM')}</strong>
+            </li>
+            <li>
+              <span>Guests</span>
+              <strong>{booking.adults} {booking.adults === 1 ? 'adult' : 'adults'}, {booking.children === 0 ? 'no children' : `${booking.children} children`}</strong>
+            </li>
+            <li>
+              <span>Accommodation</span>
+              <strong>(TODO) Casa Aisha</strong>
+            </li>
+            <li>
+              <span>Extras</span>
+              <ul className="feats">
+                <li><Image src="/meal.svg" alt="bed" width={18} height={18} /> Meals Included</li>
+              </ul>
+            </li>
+            <li className="total">
+              <span>Total amount due</span>
+              <strong>$500</strong>
+            </li>
+          </ul>
+        </div>
+        <div className="payment">
+          <h4>Payment details</h4>
+          <Form
+            // {...formItemLayout}
+            layout="vertical"
+            form={form}
+            onValuesChange={() => { }}
+          >
+            <Form.Item name="email"><Input placeholder="Email" /></Form.Item>
+            <Form.Item name="name"><Input placeholder="Cardholder Name" /></Form.Item>
+            <Form.Item name="card"><Input placeholder="Card Number" /></Form.Item>
+            <div className="grid grid-flow-col auto-rows-max gap-x-1.5">
+              <Form.Item name="expDate"><Input placeholder="Expiration Date" /></Form.Item>
+              <Form.Item name="card"><Input placeholder="CVV" /></Form.Item>
+            </div>
+          </Form>
+          <div className="stripe">Secure checkout with Stripe</div>
+          <Button type="primary" size="large">Make Booking</Button>
+        </div>
       </div>
     </div>
   )

@@ -28,6 +28,9 @@ body {
 	// 	)
 	// 	rgb(var(--background-start-rgb));
 }
+main {
+	overflow-x: hidden;
+}
 
 .container {
 	max-width: 640px;
@@ -55,42 +58,7 @@ body {
 	// height: 200px;
 	background-color: rgba(255, 255, 255, 0.9);
 	padding: 15px;
-	.thumb {
-		width: 125px;
-		height: 125px;
-		min-width: 125px;
-		position: relative;
-		margin-right: 15px;
-		img {
-			object-fit: cover;
-			height: 100%;
-			width: 100%;
-			border: 2px solid $primary;
-			overflow: hidden;
-			border-radius: 7px;
-		}
-	}
-	.date {
-		background-color: #956123;
-		color: white;
-		padding: 0 5px;
-		font-size: 14px;
-		margin-bottom: 5px;
-	}
 	color: $primary;
-	.header {
-		h1 {
-			font-size: 1.5em;
-			font-weight: bold;
-			margin-bottom: 5px;
-			line-height: 1.17;
-		}
-		h5 {
-			font-style: italic;
-			font-size: 12px;
-			font-weight: normal;
-		}
-	}
 	.col-span-5 {
 		height: 100%;
 		position: relative;
@@ -188,6 +156,42 @@ body {
 			}
 			line-height: 12px;
 		}
+	}
+}
+.retreat-header {
+	.thumb {
+		width: 125px;
+		height: 125px;
+		min-width: 125px;
+		position: relative;
+		margin-right: 15px;
+		img {
+			object-fit: cover;
+			height: 100%;
+			width: 100%;
+			border: 2px solid $primary;
+			overflow: hidden;
+			border-radius: 7px;
+		}
+	}
+	color: $primary;
+	.date {
+		background-color: #956123;
+		color: white;
+		padding: 0 5px;
+		font-size: 14px;
+		margin-bottom: 5px;
+	}
+	h1 {
+		font-size: 1.5em;
+		font-weight: bold;
+		margin-bottom: 5px;
+		line-height: 1.17;
+	}
+	h5 {
+		font-style: italic;
+		font-size: 12px;
+		font-weight: normal;
 	}
 }
 ul.feats {
@@ -295,6 +299,62 @@ ul.feats {
 	h4 {
 		font-weight: bold;
 		color: $primary;
+		text-transform: capitalize;
+	}
+	hr {
+		margin: 20px 0;
+		border-color: $primary;
+		opacity: 0.4;
+	}
+	.details {
+		color: $primary;
+		& > ul {
+			margin-top: 10px;
+			margin-bottom: 10px;
+			& > li {
+				display: flex;
+				font-size: 14px;
+				line-height: 40px;
+				strong {
+					margin-left: auto;
+				}
+				ul {
+					margin-top: 5px;
+					margin-left: auto;
+					display: flex;
+					flex-direction: column;
+					li {
+						margin-right: 0;
+					}
+				}
+				&.total {
+					border-top: 1px solid rgba($primary, 30%);
+					border-bottom: 1px solid rgba($primary, 30%);
+					line-height: 44px;
+					margin-top: 5px;
+				}
+			}
+		}
+	}
+	.payment {
+		.ant-form {
+			margin-top: 10px;
+		}
+		.ant-form-item {
+			margin-bottom: 10px;
+		}
+		.stripe {
+			text-align: center;
+			font-size: 12px;
+			line-height: 30px;
+			color: $primary;
+			margin-bottom: 10px;
+		}
+		.ant-btn-primary {
+			background-color: $primary;
+			width: 100%;
+			margin-bottom: 20px;
+		}
 	}
 }
 
