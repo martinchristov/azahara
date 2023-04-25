@@ -68,91 +68,92 @@ const FullView = ({ data }) => {
   }
   const handleUpdateBooking = (field) => (value) => {
     const $booking = {...booking}
-    $booking[field] = field.indexOf('check') === 0 ? value.format('YYYY-MM-DD') : value
+    $booking[field] = field.indexOf('check') === 0 ? value?.format('YYYY-MM-DD') : value
     setBooking($booking)
   }
   const now = dayjs()
   return (
-
-    <motion.div
-      className="relative view-slider"
-      animate={{
-        x: -(step - 1) * window.innerWidth
-      }}
-      transition={{
-        type: "spring",
-        stiffness: 270,
-        damping: 30,
-      }}
-    >
-    <div className="retreat view full">
-      <div className="inner px-4 sm:px-6 sm:pt-8 rounded-lg m-2 flex flex-col">
-        <div className="flex relative mt-3">
-          <Link href="/">
-            <Button onClick={() => setStep(1)} type="link" size="large" className="back-btn"><LeftOutlined /></Button>
-          </Link>
+    <div className="relative view-slider">
+      <motion.div
+        className="silsila"
+        animate={{
+          x: -(step - 1) * window.innerWidth
+        }}
+        transition={{
+          type: "spring",
+          stiffness: 270,
+          damping: 30,
+        }}
+      >
+      <div className="retreat view full">
+        <div className="inner rounded-lg flex flex-col">
+          <div className="flex relative mt-3">
+            <Link href="/">
+              <Button onClick={() => setStep(1)} type="link" size="large" className="back-btn"><LeftOutlined /></Button>
+            </Link>
+          </div>
+          <RetreatHeader data={data.attributes} />
+          <div className="mt-6 full-details">
+            <div className="desc"><Markdown>{data.attributes.Description}</Markdown></div>
+            <hr />
+            <h3>Booking Details</h3>
+            <div className="flex grid grid-flow-col auto-rows-max gap-x-1.5">
+              <div className="flex flex-col">
+                <div className="label">Check in</div>
+                <DatePicker inputReadOnly value={dayjs(booking.checkIn, 'YYYY-MM-DD')} disabledDate={(date) => date.valueOf() < now.valueOf() || date.valueOf() > dayjs(booking.checkOut, 'YYYY-MM-DD')} format="DD MMM" onChange={handleUpdateBooking('checkIn')} />
+              </div>
+              <div className="flex flex-col">
+                <div className="label">Check out</div>
+                <DatePicker inputReadOnly value={dayjs(booking.checkOut, 'YYYY-MM-DD')} disabledDate={(date) => date.valueOf() < dayjs(booking.checkIn, 'YYYY-MM-DD')} format="DD MMM" onChange={handleUpdateBooking('checkOut')} />
+              </div>
+            </div>
+            <div className="flex grid grid-flow-col auto-rows-max gap-x-1.5 mt-3">
+              <div className="flex flex-col">
+                <div className="label">Adults</div>
+                <Amount value={booking.adults} min={1} onChange={handleUpdateBooking('adults')} />
+              </div>
+              <div className="flex flex-col">
+                <div className="label">Children (5+)</div>
+                <Amount value={booking.children} min={0} onChange={handleUpdateBooking('children')} />
+              </div>
+            </div>
+            <ul className="feats">
+              <li><Image src="/bed.svg" alt="bed" width={18} height={18} /> {dayjs(booking.checkOut).diff(booking.checkIn, 'day', false)} Nights</li>
+              <li><Image src="/meal.svg" alt="bed" width={18} height={18} /> Meals Included</li>
+            </ul>
+            <hr />
+            <div className="transportation">
+              <h4>Transportation to venue</h4>
+              <Radio.Group value={booking.pickup} onChange={(e, v) => { handleUpdateBooking('pickup')(e.target.value) }}>
+                <Radio.Button value={true}>Airport pickup</Radio.Button>
+                <Radio.Button value={false}>Bus, taxi or other</Radio.Button>
+              </Radio.Group>
+              {booking.pickup &&
+              <p>
+                <small>We offer an airport pickup service charged separately. The cost starts from $100 from Malaga and $70 from Granada and depends on number of passengers.</small>
+              </p>
+              }
+              {(booking.pickup === false) &&
+              <p>
+                <small>Information on how to get the bus will be shared on your email after booking.</small>
+              </p>
+              }
+            </div>
+          </div>
+          <Button className="next-btn" type="primary" size="large" onClick={() => setStep(2)}>Choose Accommodation</Button>
         </div>
-        <RetreatHeader data={data.attributes} />
-        <div className="mt-6 full-details">
-          <div className="desc"><Markdown>{data.attributes.Description}</Markdown></div>
-          <hr />
-          <h3>Booking Details</h3>
-          <div className="flex grid grid-flow-col auto-rows-max gap-x-1.5">
-            <div className="flex flex-col">
-              <div className="label">Check in</div>
-              <DatePicker inputReadOnly value={dayjs(booking.checkIn, 'YYYY-MM-DD')} disabledDate={(date) => date.valueOf() < now.valueOf() || date.valueOf() > dayjs(booking.checkOut, 'YYYY-MM-DD')} format="DD MMM" onChange={handleUpdateBooking('checkIn')} />
-            </div>
-            <div className="flex flex-col">
-              <div className="label">Check out</div>
-              <DatePicker inputReadOnly value={dayjs(booking.checkOut, 'YYYY-MM-DD')} disabledDate={(date) => date.valueOf() < dayjs(booking.checkIn, 'YYYY-MM-DD')} format="DD MMM" onChange={handleUpdateBooking('checkOut')} />
-            </div>
-          </div>
-          <div className="flex grid grid-flow-col auto-rows-max gap-x-1.5 mt-3">
-            <div className="flex flex-col">
-              <div className="label">Adults</div>
-              <Amount value={booking.adults} min={1} onChange={handleUpdateBooking('adults')} />
-            </div>
-            <div className="flex flex-col">
-              <div className="label">Children (5+)</div>
-              <Amount value={booking.children} min={0} onChange={handleUpdateBooking('children')} />
-            </div>
-          </div>
-          <ul className="feats">
-            <li><Image src="/bed.svg" alt="bed" width={18} height={18} /> {dayjs(booking.checkOut).diff(booking.checkIn, 'day', false)} Nights</li>
-            <li><Image src="/meal.svg" alt="bed" width={18} height={18} /> Meals Included</li>
-          </ul>
-          <hr />
-          <div className="transportation">
-            <h4>Transportation to venue</h4>
-            <Radio.Group value={booking.pickup} onChange={(e, v) => { handleUpdateBooking('pickup')(e.target.value) }}>
-              <Radio.Button value={true}>Airport pickup</Radio.Button>
-              <Radio.Button value={false}>Bus, taxi or other</Radio.Button>
-            </Radio.Group>
-            {booking.pickup &&
-            <p>
-              <small>We offer an airport pickup service charged separately. The cost starts from $100 from Malaga and $70 from Granada and depends on number of passengers.</small>
-            </p>
-            }
-            {(booking.pickup === false) &&
-            <p>
-              <small>Information on how to get the bus will be shared on your email after booking.</small>
-            </p>
-            }
-          </div>
-        </div>
-        <Button className="next-btn" type="primary" size="large" onClick={() => setStep(2)}>Choose Accommodation</Button>
       </div>
+      <RoomsView {...{ setStep }} />
+      <CheckoutView {...{ setStep, data: data.attributes, booking }} />
+      </motion.div>
     </div>
-    <RoomsView {...{ setStep }} />
-    <CheckoutView {...{ setStep, data: data.attributes, booking }} />
-    </motion.div>
   )
 }
 
 const RoomsView = ({ setStep }) => {
   return (
     <div className="rooms-view view">
-      <div className="px-4 sm:px-6 sm:pt-8 rounded-lg m-6 flex flex-col">
+      <div className="inner rounded-lg flex flex-col">
         <div className="flex relative mt-3">
           <Button onClick={() => setStep(1)} type="link" size="large" className="back-btn"><LeftOutlined /></Button>
         </div>
@@ -162,7 +163,7 @@ const RoomsView = ({ setStep }) => {
             <div className="gallery">
               <Swiper pagination={true} modules={[Pagination]} className="mySwiper">
                 <SwiperSlide><Image src="https://res.cloudinary.com/dnqihasfp/image/upload/v1682332677/small_casa_aisha_f99ca5f2db.jpg" alt="g1" fill /></SwiperSlide>
-                <SwiperSlide><Image src="https://res.cloudinary.com/dnqihasfp/image/upload/v1682332677/small_casa_aisha_f99ca5f2db.jpg" alt="g1" fill /></SwiperSlide>
+                <SwiperSlide><Image src="https://res.cloudinary.com/dnqihasfp/image/upload/v1682332756/small_studio_ibn_bassal_9639670757.jpg" alt="g1" fill /></SwiperSlide>
               </Swiper>
             </div>
             <div className="flex grid grid-cols-12 p-2">
@@ -182,7 +183,7 @@ const RoomsView = ({ setStep }) => {
           <li onClick={() => { setStep(3) }}>
             <div className="gallery">
               <Swiper pagination={true} modules={[Pagination]} className="mySwiper">
-                <SwiperSlide><Image src="https://res.cloudinary.com/dnqihasfp/image/upload/v1682332677/small_casa_aisha_f99ca5f2db.jpg" alt="g1" fill /></SwiperSlide>
+                <SwiperSlide><Image src="https://res.cloudinary.com/dnqihasfp/image/upload/v1682332756/small_studio_ibn_bassal_9639670757.jpg" alt="g1" fill /></SwiperSlide>
                 <SwiperSlide><Image src="https://res.cloudinary.com/dnqihasfp/image/upload/v1682332677/small_casa_aisha_f99ca5f2db.jpg" alt="g1" fill /></SwiperSlide>
               </Swiper>
             </div>
@@ -252,7 +253,7 @@ const CheckoutView = ({ setStep, data, booking }) => {
   const [form] = Form.useForm();
   return (
     <div className="checkout-view view">
-      <div className="px-4 sm:px-6 sm:pt-8 rounded-lg m-6 flex flex-col">
+      <div className="inner rounded-lg flex flex-col">
         <div className="flex relative mt-3">
           <Button onClick={() => setStep(2)} type="link" size="large" className="back-btn"><LeftOutlined /></Button>
         </div>

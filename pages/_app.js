@@ -1,7 +1,5 @@
 import '@/styles/globals.scss'
-import Image from 'next/image'
 import { wrapper } from '@/utils/store'
-import { AnimatePresence } from 'framer-motion'
 import Layout from '../components/layout'
 
 
