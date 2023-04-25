@@ -283,3 +283,25 @@ ul.feats {
 		}
 	}
 }
+
+.checkout-view {
+	position: absolute;
+	width: 100%;
+	left: calc(100vw * 2);
+	top: 0;
+	& > div {
+		background-color: rgba(255, 255, 255, 0.8);
+	}
+	h4 {
+		font-weight: bold;
+		color: $primary;
+	}
+}
+
+.back-btn {
+	position: absolute;
+	top: -66px;
+	left: -27px;
+	color: white;
+	font-size: 24px !important;
+}

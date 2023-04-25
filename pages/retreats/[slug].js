@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import Markdown from 'react-markdown'
 import { Button, DatePicker, Radio } from "antd";
-import { MinusSquareOutlined, PlusSquareOutlined } from "@ant-design/icons";
+import { LeftOutlined, MinusSquareOutlined, PlusSquareOutlined } from "@ant-design/icons";
 import { motion } from "framer-motion";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination } from "swiper"
@@ -55,7 +55,6 @@ const FullView = ({ data }) => {
   }
   const now = dayjs()
   const { Title, Subtitle, Cover, Starts, Ends, Description } = data.attributes
-  console.log(booking)
   return (
 
     <motion.div
@@ -134,6 +133,7 @@ const FullView = ({ data }) => {
       <Button className="next-btn" type="primary" size="large" onClick={() => setStep(2)}>Choose Accommodation</Button>
     </div>
     <RoomsView {...{setStep}} />
+    <CheckoutView {...{setStep}} />
     </motion.div>
   )
 }
@@ -142,12 +142,12 @@ const RoomsView = ({ setStep }) => {
   return (
     <div className="rooms-view">
       <div className="px-4 sm:px-6 sm:pt-8 rounded-lg m-6 flex flex-col">
-        <div className="flex">
-          <Button onClick={() => setStep(1)}>back</Button>
+        <div className="flex relative mt-3">
+          <Button onClick={() => setStep(1)} type="link" size="large" className="back-btn"><LeftOutlined /></Button>
         </div>
         <h4>Choose Accommodation</h4>
         <ul className="results">
-          <li>
+          <li onClick={() => { setStep(3) }}>
             <div className="gallery">
               <Swiper pagination={true} modules={[Pagination]} className="mySwiper">
                 <SwiperSlide><Image src="https://res.cloudinary.com/dnqihasfp/image/upload/v1682332677/small_casa_aisha_f99ca5f2db.jpg" alt="g1" fill /></SwiperSlide>
@@ -169,6 +169,19 @@ const RoomsView = ({ setStep }) => {
             </div>
           </li>
         </ul>
+      </div>
+    </div>
+  )
+}
+
+const CheckoutView = ({ setStep }) => {
+  return (
+    <div className="checkout-view">
+      <div className="px-4 sm:px-6 sm:pt-8 rounded-lg m-6 flex flex-col">
+        <div className="flex relative mt-3">
+          <Button onClick={() => setStep(2)} type="link" size="large" className="back-btn"><LeftOutlined /></Button>
+        </div>
+        <h4>Complete Your Booking</h4>
       </div>
     </div>
   )
