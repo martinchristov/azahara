@@ -30,7 +30,7 @@ export default function Home() {
         return (
           <Link href={`/retreats/${Slug}`} key={retreat.id}>
           <div className="retreat bg-whitepx-4 sm:px-6 sm:pt-8 rounded-lg m-6">
-            <div className="header flex">
+            <div className="retreat-header flex">
               <div className="thumb col">
                 {Cover.data != null &&
                 <Image src={Cover.data.attributes.formats.small.url} fill alt="cover" />
