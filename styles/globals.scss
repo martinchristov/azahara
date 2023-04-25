@@ -49,22 +49,26 @@ main {
 	object-fit: cover;
 	position: relative;
 	z-index: -1;
-	position: fixed;
+	position: fixed !important;
 	top: 0;
 }
 .retreats {
 }
 .retreat {
 	// height: 200px;
-	background-color: rgba(255, 255, 255, 0.9);
 	padding: 15px;
 	color: $primary;
 	.col-span-5 {
 		height: 100%;
 		position: relative;
 	}
+	& > .inner {
+		background-color: rgba(255, 255, 255, 0.9);
+	}
 	&.full {
-		min-height: calc(100vh - 100px);
+		.back-btn {
+			// margin-top: -15px;
+		}
 		hr {
 			margin: 1.3em 0;
 			border-color: rgba(109, 109, 49, 0.19);
@@ -140,6 +144,7 @@ main {
 	}
 
 	.transportation {
+		margin-bottom: 20px;
 		h4 {
 			margin-top: -5px;
 			margin-bottom: 10px;
@@ -157,6 +162,9 @@ main {
 			line-height: 12px;
 		}
 	}
+}
+.retreat.card {
+	background-color: rgba(255, 255, 255, 0.8);
 }
 .retreat-header {
 	.thumb {
@@ -215,7 +223,7 @@ ul.feats {
 	position: absolute;
 	width: 100%;
 	left: calc(100vw);
-	top: 0;
+	top: -25px;
 	& > div {
 		background-color: rgba(255, 255, 255, 0.8);
 	}
@@ -288,11 +296,28 @@ ul.feats {
 	}
 }
 
+.view-slider {
+	.view {
+		overflow-y: scroll;
+		height: calc(100vh);
+		padding-top: 40px;
+		&:not(:first-child) {
+			top: -13px;
+			height: calc(100vh + 13px);
+		}
+
+		& > div {
+			min-height: calc(100vh - 100px);
+			padding-bottom: 20px;
+		}
+	}
+}
 .checkout-view {
 	position: absolute;
 	width: 100%;
 	left: calc(100vw * 2);
-	top: 0;
+	// top: 0;
+
 	& > div {
 		background-color: rgba(255, 255, 255, 0.8);
 	}
@@ -360,7 +385,7 @@ ul.feats {
 
 .back-btn {
 	position: absolute;
-	top: -66px;
+	top: -70px;
 	left: -27px;
 	color: white;
 	font-size: 24px !important;

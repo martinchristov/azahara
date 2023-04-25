@@ -29,7 +29,7 @@ export default function Home() {
         const { Title, Subtitle, Starts, Ends, Cover, Slug } = retreat.attributes
         return (
           <Link href={`/retreats/${Slug}`} key={retreat.id}>
-          <div className="retreat bg-whitepx-4 sm:px-6 sm:pt-8 rounded-lg m-6">
+          <div className="retreat card bg-whitepx-4 sm:px-6 sm:pt-8 rounded-lg m-6">
             <div className="retreat-header flex">
               <div className="thumb col">
                 {Cover.data != null &&
