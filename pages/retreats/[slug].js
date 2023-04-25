@@ -35,11 +35,9 @@ export default function RetreatView(props) {
     }
   }, [])
   return (
-    <Layout>
-      <div className="container mx-auto">
-        {data && <FullView {...{ data }} />}
-      </div>
-    </Layout>
+    <div className="container mx-auto">
+      {data && <FullView {...{ data }} />}
+    </div>
   )
 }
 

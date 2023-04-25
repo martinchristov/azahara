@@ -22,7 +22,6 @@ export default function Home() {
     }
   }, [])
   return (
-    <Layout>
     <div className="container mx-auto">
       <div className="retreats">
       {retreatsState?.map(retreat => {
@@ -50,6 +49,5 @@ export default function Home() {
       })}
       </div>
     </div>
-    </Layout>
   )
 }
