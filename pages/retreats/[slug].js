@@ -102,11 +102,11 @@ const FullView = ({ data }) => {
           <div className="flex grid grid-flow-col auto-rows-max gap-x-1.5">
             <div className="flex flex-col">
               <div className="label">Check in</div>
-              <DatePicker value={dayjs(booking.checkIn, 'YYYY-MM-DD')} disabledDate={(date) => date.valueOf() < now.valueOf() || date.valueOf() > dayjs(booking.checkOut, 'YYYY-MM-DD')} format="DD MMM" onChange={handleUpdateBooking('checkIn')} />
+              <DatePicker inputReadOnly value={dayjs(booking.checkIn, 'YYYY-MM-DD')} disabledDate={(date) => date.valueOf() < now.valueOf() || date.valueOf() > dayjs(booking.checkOut, 'YYYY-MM-DD')} format="DD MMM" onChange={handleUpdateBooking('checkIn')} />
             </div>
             <div className="flex flex-col">
               <div className="label">Check out</div>
-              <DatePicker value={dayjs(booking.checkOut, 'YYYY-MM-DD')} disabledDate={(date) => date.valueOf() < dayjs(booking.checkIn, 'YYYY-MM-DD')} format="DD MMM" onChange={handleUpdateBooking('checkOut')} />
+              <DatePicker inputReadOnly value={dayjs(booking.checkOut, 'YYYY-MM-DD')} disabledDate={(date) => date.valueOf() < dayjs(booking.checkIn, 'YYYY-MM-DD')} format="DD MMM" onChange={handleUpdateBooking('checkOut')} />
             </div>
           </div>
           <div className="flex grid grid-flow-col auto-rows-max gap-x-1.5 mt-3">
