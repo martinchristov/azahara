@@ -1,13 +1,10 @@
 import Image from 'next/image'
-import { Inter } from 'next/font/google'
 import { useEffect, useState } from 'react'
 import dayjs from 'dayjs'
 import Link from 'next/link'
 import { selectRetreatsState, setRetreatsState } from '../utils/retreatsSlice';
 import { useDispatch, useSelector } from "react-redux";
-import Layout from '@/components/layout'
-
-const inter = Inter({ subsets: ['latin'] })
+import AzaharaV from '../assets/azahara-v.svg'
 
 export default function Home() {
   const retreatsState = useSelector(selectRetreatsState);
@@ -23,6 +20,7 @@ export default function Home() {
   }, [])
   return (
     <div className="container mx-auto">
+      <AzaharaV />
       <div className="retreats">
       {retreatsState?.map(retreat => {
         const { Title, Subtitle, Starts, Ends, Cover, Slug } = retreat.attributes
