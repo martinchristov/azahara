@@ -151,6 +151,24 @@ const FullView = ({ data }) => {
 }
 
 const RoomsView = ({ setStep }) => {
+  const [selected, setSelected] = useState(-1)
+  const mockResults = [
+    {
+      Title: 'Private Casa Aisha',
+      Description: '2 double bedroom, 2 bathroom house that sleeps up to 4. Light filled living area with fireplace and French doors opening to the patio with views of the Mediterranean and beyond. Large kitchen/dining room that opens to a shaded porch as well as garden, with panoramic views of the mountains and the sea. Parking for 2 cars.',
+      Gallery: ['https://res.cloudinary.com/dnqihasfp/image/upload/v1682332677/small_casa_aisha_f99ca5f2db.jpg', 'https://res.cloudinary.com/dnqihasfp/image/upload/v1682332756/small_studio_ibn_bassal_9639670757.jpg']
+    },
+    {
+      Title: 'Private Casa Bin Yameen',
+      Description: '2 double bedroom, 2 bathroom house that sleeps up to 4. Light filled living area with fireplace and French doors opening to the patio with views of the Mediterranean and beyond. Large kitchen/dining room that opens to a shaded porch as well as garden, with panoramic views of the mountains and the sea. Parking for 2 cars.',
+      Gallery: ['https://res.cloudinary.com/dnqihasfp/image/upload/v1682332756/small_studio_ibn_bassal_9639670757.jpg', 'https://res.cloudinary.com/dnqihasfp/image/upload/v1682332677/small_casa_aisha_f99ca5f2db.jpg']
+    }
+  ]
+  const handleClick = (index) => () => {
+    if(selected === -1){
+       setSelected(index)
+    }
+  }
   return (
     <div className="rooms-view view">
       <div className="inner rounded-lg flex flex-col">
@@ -159,95 +177,65 @@ const RoomsView = ({ setStep }) => {
         </div>
         <h4>Choose Accommodation</h4>
         <ul className="results">
-          <li onClick={() => { setStep(3) }}>
-            <div className="gallery">
-              <Swiper pagination={true} modules={[Pagination]} className="mySwiper">
-                <SwiperSlide><Image src="https://res.cloudinary.com/dnqihasfp/image/upload/v1682332677/small_casa_aisha_f99ca5f2db.jpg" alt="g1" fill /></SwiperSlide>
-                <SwiperSlide><Image src="https://res.cloudinary.com/dnqihasfp/image/upload/v1682332756/small_studio_ibn_bassal_9639670757.jpg" alt="g1" fill /></SwiperSlide>
-              </Swiper>
-            </div>
-            <div className="flex grid grid-cols-12 p-2">
-              <div className="col-span-8 flex flex-col">
-                <h3>Casa Aisha</h3>
-                <ul className="feats">
-                  <li>Sleeps 4</li>
-                  <li>3 Beds</li>
-                </ul>
-              </div>
-              <div className="col-span-4 flex flex-col prices">
-                <strong>$300</strong>
-                <small>$130 per night</small>
-              </div>
-            </div>
-          </li>
-          <li onClick={() => { setStep(3) }}>
-            <div className="gallery">
-              <Swiper pagination={true} modules={[Pagination]} className="mySwiper">
-                <SwiperSlide><Image src="https://res.cloudinary.com/dnqihasfp/image/upload/v1682332756/small_studio_ibn_bassal_9639670757.jpg" alt="g1" fill /></SwiperSlide>
-                <SwiperSlide><Image src="https://res.cloudinary.com/dnqihasfp/image/upload/v1682332677/small_casa_aisha_f99ca5f2db.jpg" alt="g1" fill /></SwiperSlide>
-              </Swiper>
-            </div>
-            <div className="flex grid grid-cols-12 p-2">
-              <div className="col-span-8 flex flex-col">
-                <h3>Casa Ibn Hassan</h3>
-                <ul className="feats">
-                  <li>Sleeps 4</li>
-                  <li>3 Beds</li>
-                </ul>
-              </div>
-              <div className="col-span-4 flex flex-col prices">
-                <strong>$300</strong>
-                <small>$130 per night</small>
-              </div>
-            </div>
-          </li>
-          <li onClick={() => { setStep(3) }}>
-            <div className="gallery">
-              <Swiper pagination={true} modules={[Pagination]} className="mySwiper">
-                <SwiperSlide><Image src="https://res.cloudinary.com/dnqihasfp/image/upload/v1682332677/small_casa_aisha_f99ca5f2db.jpg" alt="g1" fill /></SwiperSlide>
-                <SwiperSlide><Image src="https://res.cloudinary.com/dnqihasfp/image/upload/v1682332677/small_casa_aisha_f99ca5f2db.jpg" alt="g1" fill /></SwiperSlide>
-              </Swiper>
-            </div>
-            <div className="flex grid grid-cols-12 p-2">
-              <div className="col-span-8 flex flex-col">
-                <h3>Casa Ibn Hassan</h3>
-                <ul className="feats">
-                  <li>Sleeps 4</li>
-                  <li>3 Beds</li>
-                </ul>
-              </div>
-              <div className="col-span-4 flex flex-col prices">
-                <strong>$300</strong>
-                <small>$130 per night</small>
-              </div>
-            </div>
-          </li>
-          <li onClick={() => { setStep(3) }}>
-            <div className="gallery">
-              <Swiper pagination={true} modules={[Pagination]} className="mySwiper">
-                <SwiperSlide><Image src="https://res.cloudinary.com/dnqihasfp/image/upload/v1682332677/small_casa_aisha_f99ca5f2db.jpg" alt="g1" fill /></SwiperSlide>
-                <SwiperSlide><Image src="https://res.cloudinary.com/dnqihasfp/image/upload/v1682332677/small_casa_aisha_f99ca5f2db.jpg" alt="g1" fill /></SwiperSlide>
-              </Swiper>
-            </div>
-            <div className="flex grid grid-cols-12 p-2">
-              <div className="col-span-8 flex flex-col">
-                <h3>Casa Ibn Hassan</h3>
-                <ul className="feats">
-                  <li>Sleeps 4</li>
-                  <li>3 Beds</li>
-                </ul>
-              </div>
-              <div className="col-span-4 flex flex-col prices">
-                <strong>$300</strong>
-                <small>$130 per night</small>
-              </div>
-            </div>
-          </li>
+          {mockResults.map((result, index) => {
+            return (
+              <li key={result.Title} onClick={handleClick(index)}>
+                <motion.div
+                  className="expander"
+                  animate={selected === index ? {
+                    x: -20,
+                    y: -index * 208,
+                    height: (window.innerHeight - 200),
+                    width: window.innerWidth - 20,
+                    zIndex: 10
+                  } : {
+                    x: 0,
+                    y: 0,
+                    width: window.innerWidth - 60,
+                    height: 198,
+                    transitionEnd: {
+                      zIndex: 0
+                    }
+                  }}
+                  transition={{
+                    type: "spring",
+                    stiffness: 270,
+                    damping: 30,
+                  }}
+                >
+                  <div className="gallery">
+                    <Swiper pagination={true} modules={[Pagination]} className="mySwiper">
+                      <SwiperSlide><Image src="https://res.cloudinary.com/dnqihasfp/image/upload/v1682332677/small_casa_aisha_f99ca5f2db.jpg" alt="g1" fill /></SwiperSlide>
+                      <SwiperSlide><Image src="https://res.cloudinary.com/dnqihasfp/image/upload/v1682332756/small_studio_ibn_bassal_9639670757.jpg" alt="g1" fill /></SwiperSlide>
+                    </Swiper>
+                  </div>
+                  <div className="flex grid grid-cols-12 p-3">
+                    <div className="col-span-8 flex flex-col">
+                      <h3>{result.Title}</h3>
+                      <ul className="feats">
+                        <li>Sleeps 4</li>
+                        <li>3 Beds</li>
+                      </ul>
+                    </div>
+                    <div className="col-span-4 flex flex-col prices text-right">
+                      <strong>$300</strong>
+                      <small>Final price</small>
+                    </div>
+                  </div>
+                  <p className="p-3"><small>{result.Description}</small></p>
+                  <div className="bottom flex mt-auto m-3">
+                    <Button size="large" onClick={() => setSelected(-1)}>Cancel</Button><Button type="primary" size="large" className="ml-2 flex-1">Confirm</Button>
+                  </div>
+                </motion.div>
+              </li>
+            )
+          })}
         </ul>
       </div>
     </div>
   )
 }
+
 
 const CheckoutView = ({ setStep, data, booking }) => {
   const [form] = Form.useForm();
