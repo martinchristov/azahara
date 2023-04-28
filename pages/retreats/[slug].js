@@ -188,7 +188,6 @@ const RoomsView = ({ setStep }) => {
        setSelected(index)
     }
   }
-  console.log(scrollviewRef.current)
   return (
     <div className="rooms-view view" ref={scrollviewRef}>
       <div className="inner rounded-lg flex flex-col">

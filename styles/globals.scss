@@ -130,6 +130,7 @@ ul.feats {
   .view {
     overflow-y: scroll;
     height: calc(100vh);
+    height: calc(var(--vh, 1vh) * 100);
     width: 100vw;
     padding-top: 90px;
     .inner {
@@ -142,6 +143,9 @@ ul.feats {
       padding-bottom: 20px;
     }
   }
+}
+.landing.view {
+  padding-top: 0;
 }
 
 .retreat.full.view {

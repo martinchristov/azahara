@@ -19,32 +19,36 @@ export default function Home() {
     }
   }, [])
   return (
-    <div className="container mx-auto">
-      <AzaharaV />
-      <div className="retreats">
-      {retreatsState?.map(retreat => {
-        const { Title, Subtitle, Starts, Ends, Cover, Slug } = retreat.attributes
-        return (
-          <Link href={`/retreats/${Slug}`} key={retreat.id}>
-          <div className="retreat card bg-whitepx-4 sm:px-6 sm:pt-8 rounded-lg m-6">
-            <div className="retreat-header flex">
-              <div className="thumb col">
-                {Cover.data != null &&
-                <Image src={Cover.data.attributes.formats.small.url} fill alt="cover" />
-                }
-              </div>
-              <div className="col justify-center flex flex-col">
-                <div className='flex'>
-                  <div className="date rounded-sm">{dayjs(Starts, 'YYYY-MM-DD').format('MMM DD')} - {dayjs(Ends, 'YYYY-MM-DD').format('MMM DD')}</div>
+    <div className="view-slider">
+      <div className="view landing">
+        <div className="container mx-auto">
+          <AzaharaV />
+          <div className="retreats">
+          {retreatsState?.map(retreat => {
+            const { Title, Subtitle, Starts, Ends, Cover, Slug } = retreat.attributes
+            return (
+              <Link href={`/retreats/${Slug}`} key={retreat.id}>
+              <div className="retreat card bg-whitepx-4 sm:px-6 sm:pt-8 rounded-lg m-6">
+                <div className="retreat-header flex">
+                  <div className="thumb col">
+                    {Cover.data != null &&
+                    <Image src={Cover.data.attributes.formats.small.url} fill alt="cover" />
+                    }
+                  </div>
+                  <div className="col justify-center flex flex-col">
+                    <div className='flex'>
+                      <div className="date rounded-sm">{dayjs(Starts, 'YYYY-MM-DD').format('MMM DD')} - {dayjs(Ends, 'YYYY-MM-DD').format('MMM DD')}</div>
+                    </div>
+                    <h1>{Title}</h1>
+                    <h5>{Subtitle}</h5>
+                  </div>
                 </div>
-                <h1>{Title}</h1>
-                <h5>{Subtitle}</h5>
               </div>
-            </div>
+              </Link>
+            )
+          })}
           </div>
-          </Link>
-        )
-      })}
+        </div>
       </div>
     </div>
   )
