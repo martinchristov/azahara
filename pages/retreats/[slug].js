@@ -207,15 +207,13 @@ const RoomsView = ({ setStep }) => {
                     y: -index * 208 - 160 + (scrollviewRef.current != null ? scrollviewRef.current.scrollTop : 0),
                     height: (window.innerHeight - 20),
                     width: window.innerWidth - 20,
-                    zIndex: 10
+                    zIndex: 1000,
                   } : {
                     x: 0,
                     y: 0,
                     width: window.innerWidth - 60,
                     height: 198,
-                    transitionEnd: {
-                      zIndex: 0
-                    }
+                    zIndex: 0
                   }}
                   transition={{
                     type: "spring",
