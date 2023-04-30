@@ -4,7 +4,7 @@ import AzaharaV from '../assets/azahara-v.svg'
 
 const Layout = ({ children }) => {
   return (
-    <main className="min-h-screen">
+    <main>
       <Image className="mobile-only bg" src="/bg.jpg" alt="bg" fill />
       <Image className="desktop-only bg" src="/bg-desktop.jpg" alt="bg" fill />
       {/* <motion.div

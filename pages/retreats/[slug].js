@@ -189,7 +189,7 @@ const RoomsView = ({ setStep }) => {
     }
   }
   return (
-    <div className="rooms-view view" ref={scrollviewRef}>
+    <div className={classNames('rooms-view view', { scrollLock: selected !== -1 })} ref={scrollviewRef}>
       <div className="inner rounded-lg flex flex-col">
         <div className="flex relative mt-3 nav-heading">
           <Button onClick={() => setStep(1)} type="link" size="large" className="back-btn"><LeftOutlined /></Button>

@@ -29,7 +29,9 @@ body {
   // 	rgb(var(--background-start-rgb));
 }
 main {
-  overflow-x: hidden;
+  overflow: hidden;
+  height: 100vh;
+  height: calc(var(--vh, 1vh) * 100);
 }
 
 .container {
@@ -133,6 +135,9 @@ ul.feats {
     height: calc(var(--vh, 1vh) * 100);
     width: 100vw;
     padding-top: 90px;
+    &.scrollLock {
+      overflow-y: hidden;
+    }
     .inner {
       margin: 15px;
       padding: 5px 15px 15px;
@@ -334,6 +339,12 @@ ul.feats {
           font-size: 10px;
         }
       }
+    }
+  }
+  .expander {
+    p {
+      width: calc(100vw - 30px);
+      text-align: justify;
     }
   }
 }
