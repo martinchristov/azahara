@@ -8,7 +8,7 @@ import { useSelector } from "react-redux";
 import Markdown from 'react-markdown'
 import { Button, DatePicker, Form, Input, Radio } from "antd";
 import { LeftOutlined, MinusSquareOutlined, PlusSquareOutlined } from "@ant-design/icons";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination } from "swiper"
 import AzaharaH from '../../assets/azahara-h.svg'
@@ -150,7 +150,7 @@ const FullView = ({ data }) => {
             <Button className="next-btn" type="primary" size="large" onClick={() => setStep(2)}>Choose Accommodation</Button>
           </div>
         </div>
-        <RoomsView {...{ setStep }} />
+        <RoomsView {...{ setStep, step }} />
         <CheckoutView {...{ setStep, data: data.attributes, booking }} />
         </motion.div>
       </div>
@@ -158,7 +158,7 @@ const FullView = ({ data }) => {
   )
 }
 
-const RoomsView = ({ setStep }) => {
+const RoomsView = ({ setStep, step }) => {
   const scrollviewRef = useRef()
   const [selected, setSelected] = useState(-1)
   const mockResults = [
@@ -188,6 +188,7 @@ const RoomsView = ({ setStep }) => {
        setSelected(index)
     }
   }
+  const fullWidth = window.innerWidth > 720 ? 630 : window.innerWidth
   return (
     <div className={classNames('rooms-view view', { scrollLock: selected !== -1 })} ref={scrollviewRef}>
       <div className="inner rounded-lg flex flex-col">
@@ -196,6 +197,17 @@ const RoomsView = ({ setStep }) => {
           <h5>Choose Accommodation</h5>
         </div>
         {/* <h4>Choose Accommodation</h4> */}
+        <AnimatePresence>
+          {(selected !== -1 && step === 2) && (
+            <motion.div
+              className="dimmer"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => { setSelected(-1) }}
+            />
+          )}
+        </AnimatePresence>
         <ul className="results">
           {mockResults.map((result, index) => {
             return (
@@ -206,12 +218,12 @@ const RoomsView = ({ setStep }) => {
                     x: -20,
                     y: -index * 208 - 160 + (scrollviewRef.current != null ? scrollviewRef.current.scrollTop : 0),
                     height: (window.innerHeight - 20),
-                    width: window.innerWidth - 20,
+                    width: fullWidth - 20,
                     zIndex: 1000,
                   } : {
                     x: 0,
                     y: 0,
-                    width: window.innerWidth - 60,
+                    width: fullWidth - 60,
                     height: 198,
                     zIndex: 0
                   }}
