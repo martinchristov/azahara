@@ -441,8 +441,10 @@ const RoomsView = ({ setStep, step, booking, setBooking, retreat }) => {
   )
 }
 
-const calcPrice = (room, booking, retreat) => {
-  return `€${room.bookingPrice + retreat.Price * booking.adults}`
+const calcPrice = (room, booking, retreat, isDeposit) => {
+  let price = room.bookingPrice + retreat.Price * booking.adults
+  if (isDeposit) price = price / 2
+  return `€${price.toFixed(2)}`
 }
 
 const CheckoutView = ({ setStep, data, booking, retreat }) => {
@@ -505,6 +507,12 @@ const CheckoutView = ({ setStep, data, booking, retreat }) => {
                 <li className="total">
                   <span>Total amount due</span>
                   <strong>{calcPrice(booking.room, booking, retreat)}</strong>
+                </li>
+                <li className="total deposit">
+                  <span>50% Deposit Due Now</span>
+                  <strong>
+                    {calcPrice(booking.room, booking, retreat, true)}
+                  </strong>
                 </li>
               </>
             )}
