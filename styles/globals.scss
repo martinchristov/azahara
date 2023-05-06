@@ -44,7 +44,7 @@ main {
 }
 .desktop-only {
   @media screen and (max-width: 640px) {
-    display: none;
+    display: none !important;
   }
 }
 .bg {
