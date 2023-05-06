@@ -272,6 +272,18 @@ ul.feats {
     font-weight: bold;
     color: $primary;
   }
+  .spin-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    .spinner {
+      .anticon {
+        font-size: 44px;
+        color: $primary;
+      }
+    }
+  }
   .dimmer {
     position: absolute;
     width: 100%;

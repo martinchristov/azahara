@@ -332,20 +332,12 @@ const RoomsView = ({ setStep, step, booking, setBooking, retreat }) => {
             />
           )}
         </AnimatePresence>
-        {loading && (
-          <Spin
-            className="spinner"
-            indicator={
-              <LoadingOutlined
-                style={{
-                  fontSize: 34,
-                }}
-                spin
-              />
-            }
-          />
+        {true && (
+          <div className="spin-container">
+            <Spin className="spinner" indicator={<LoadingOutlined spin />} />
+          </div>
         )}
-        {!loading && (
+        {!true && (
           <ul className="results">
             {results.map((result, index) => {
               return (
@@ -448,7 +440,6 @@ const calcPrice = (room, booking, retreat, isDeposit) => {
 
 const CheckoutView = ({ setStep, data, booking, retreat }) => {
   const [form] = Form.useForm()
-  console.log(booking)
   return (
     <div className="checkout-view view">
       <div className="inner rounded-lg flex flex-col">
