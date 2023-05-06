@@ -332,12 +332,12 @@ const RoomsView = ({ setStep, step, booking, setBooking, retreat }) => {
             />
           )}
         </AnimatePresence>
-        {true && (
+        {loading && (
           <div className="spin-container">
             <Spin className="spinner" indicator={<LoadingOutlined spin />} />
           </div>
         )}
-        {!true && (
+        {!loading && (
           <ul className="results">
             {results.map((result, index) => {
               return (
