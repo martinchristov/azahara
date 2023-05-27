@@ -253,6 +253,7 @@ const FullView = ({ data }) => {
           <CheckoutView
             {...{
               setStep,
+              step,
               data: data.attributes,
               booking,
               retreat: data.attributes,

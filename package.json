@@ -12,6 +12,8 @@
   "dependencies": {
     "@ant-design/icons": "^5.0.1",
     "@reduxjs/toolkit": "^1.9.5",
+    "@stripe/react-stripe-js": "^2.1.0",
+    "@stripe/stripe-js": "^1.53.0",
     "antd": "^5.4.4",
     "autoprefixer": "10.4.14",
     "classnames": "^2.3.2",
@@ -29,6 +31,7 @@
     "react-markdown": "^8.0.7",
     "react-redux": "^8.0.5",
     "sass": "^1.62.0",
+    "stripe": "^12.6.0",
     "swiper": "^9.2.4",
     "tailwindcss": "3.3.1"
   },
