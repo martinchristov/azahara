@@ -382,11 +382,21 @@ const RoomsView = ({ setStep, step, booking, setBooking, retreat }) => {
                           modules={[Pagination]}
                           className="mySwiper"
                         >
-                          {result.Gallery.data.map((image) => (
-                            <SwiperSlide key={image.id}>
-                              <Image src={image.attributes.url} alt="g1" fill />
-                            </SwiperSlide>
-                          ))}
+                          {result.Gallery.data
+                            .sort((a, b) =>
+                              a.attributes.name < b.attributes.name ? -1 : 1
+                            )
+                            .map((image) => {
+                              const url =
+                                image.attributes.formats.hasOwnProperty('large')
+                                  ? image.attributes.formats.large.url
+                                  : image.attributes.url
+                              return (
+                                <SwiperSlide key={image.id}>
+                                  <Image src={url} alt="g1" fill />
+                                </SwiperSlide>
+                              )
+                            })}
                         </Swiper>
                       )}
                     </div>
