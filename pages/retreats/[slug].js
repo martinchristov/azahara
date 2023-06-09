@@ -17,6 +17,7 @@ import { Swiper, SwiperSlide } from 'swiper/react'
 import { Pagination } from 'swiper'
 import AzaharaH from '../../assets/azahara-h.svg'
 import CheckoutView from './_comp/checkout'
+import RetreatHeader from './_comp/header'
 
 import 'swiper/css'
 import 'swiper/css/pagination'
@@ -46,32 +47,6 @@ export default function RetreatView(props) {
   return (
     <div className="container mx-auto">
       {data && <FullView {...{ data }} />}
-    </div>
-  )
-}
-
-const RetreatHeader = ({ data: { Cover, Starts, Ends, Title, Subtitle } }) => {
-  return (
-    <div className="flex retreat-header">
-      <div className="thumb col">
-        {Cover?.data != null && (
-          <Image
-            src={Cover.data.attributes.formats.small.url}
-            fill
-            alt="cover"
-          />
-        )}
-      </div>
-      <div className="col justify-center flex flex-col">
-        <div className="flex">
-          <div className="date rounded-sm">
-            {dayjs(Starts, 'YYYY-MM-DD').format('MMM DD')} -{' '}
-            {dayjs(Ends, 'YYYY-MM-DD').format('MMM DD')}
-          </div>
-        </div>
-        <h1>{Title}</h1>
-        <h5>{Subtitle}</h5>
-      </div>
     </div>
   )
 }
@@ -267,7 +242,6 @@ const FullView = ({ data }) => {
               booking,
               retreat: data.attributes,
               calcPrice,
-              RetreatHeader,
             }}
           />
         </motion.div>

@@ -10,18 +10,11 @@ import {
   useElements,
 } from '@stripe/react-stripe-js'
 import { useEffect, useState } from 'react'
+import RetreatHeader from './header'
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY)
 
-const CheckoutView = ({
-  setStep,
-  data,
-  booking,
-  retreat,
-  RetreatHeader,
-  calcPrice,
-  step,
-}) => {
+const CheckoutView = ({ setStep, data, booking, retreat, calcPrice, step }) => {
   const [form] = Form.useForm()
   const [clientSecret, setClientSecret] = useState()
   useEffect(() => {
