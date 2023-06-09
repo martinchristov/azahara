@@ -299,6 +299,15 @@ ul.feats {
       margin-top: 10px;
       position: relative;
       height: 198px;
+
+      @media screen and (min-width: 640px) {
+        // height: 220px;
+        // min-height: 180px;
+        // .gallery {
+        //   height: 150px !important;
+        //   min-height: 150px !important;
+        // }
+      }
       .expander {
         width: 100%;
         display: flex;
@@ -312,7 +321,10 @@ ul.feats {
         &.expanded {
           border-radius: 7px;
           .gallery {
-            height: 180px;
+            height: 270px;
+            @media screen and (min-width: 640px) {
+              height: 360px;
+            }
           }
         }
       }

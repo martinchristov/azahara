@@ -84,7 +84,15 @@ const FullView = ({ data }) => {
     children: 0,
     room: null,
   })
+  const containerRef = useRef()
   const [step, setStep] = useState(1)
+  const [width, setWidth] = useState(0)
+  useEffect(() => {
+    window.addEventListener('resize', () => {
+      setWidth(window.innerWidth)
+    })
+    setWidth(window.innerWidth)
+  }, [])
   if (!data) {
     return <div>Loading...</div>
   }
@@ -95,16 +103,17 @@ const FullView = ({ data }) => {
     setBooking($booking)
   }
   const now = dayjs()
+
   return (
     <>
       <div className="absolute">
         <AzaharaH />
       </div>
-      <div className="relative view-slider">
+      <div className="relative view-slider" ref={containerRef}>
         <motion.div
           className="silsila"
           animate={{
-            x: -(step - 1) * window.innerWidth,
+            x: -(step - 1) * width,
           }}
           transition={{
             type: 'spring',
@@ -342,104 +351,141 @@ const RoomsView = ({ setStep, step, booking, setBooking, retreat }) => {
           <ul className="results">
             {results.map((result, index) => {
               return (
-                <li key={result.Title} onClick={handleClick(index)}>
-                  <motion.div
-                    className={classNames('expander', {
-                      expanded: selected === index,
-                    })}
-                    animate={
-                      selected === index
-                        ? {
-                            x: -20,
-                            y:
-                              -index * 208 -
-                              160 +
-                              (scrollviewRef.current != null
-                                ? scrollviewRef.current.scrollTop
-                                : 0),
-                            height: window.innerHeight - 20,
-                            width: fullWidth - 20,
-                            zIndex: 1000,
-                          }
-                        : {
-                            x: 0,
-                            y: 0,
-                            width: fullWidth - 60,
-                            height: 198,
-                            zIndex: 0,
-                          }
-                    }
-                    transition={{
-                      type: 'spring',
-                      stiffness: 220,
-                      damping: 20,
-                    }}
-                  >
-                    <div className="gallery">
-                      {result.Gallery.data && (
-                        <Swiper
-                          pagination={true}
-                          modules={[Pagination]}
-                          className="mySwiper"
-                        >
-                          {result.Gallery.data
-                            .sort((a, b) =>
-                              a.attributes.name < b.attributes.name ? -1 : 1
-                            )
-                            .map((image) => {
-                              const url =
-                                image.attributes.formats.hasOwnProperty('large')
-                                  ? image.attributes.formats.large.url
-                                  : image.attributes.url
-                              return (
-                                <SwiperSlide key={image.id}>
-                                  <Image src={url} alt="g1" fill />
-                                </SwiperSlide>
-                              )
-                            })}
-                        </Swiper>
-                      )}
-                    </div>
-                    <div className="flex grid grid-cols-12 p-3">
-                      <div className="col-span-8 flex flex-col">
-                        <h3>{result.Title}</h3>
-                        <ul className="feats">
-                          <li>{result.Shared ? 'Shared' : 'Private'}</li>
-                          <li>Sleeps {result.Beds}</li>
-                          <li className="desktop-only">Meals included</li>
-                        </ul>
-                      </div>
-                      <div className="col-span-4 flex flex-col prices text-right">
-                        <strong>{calcPrice(result, booking, retreat)}</strong>
-                        <small>
-                          Final price for {booking.adults + booking.children}
-                        </small>
-                      </div>
-                    </div>
-                    <p className="p-3">
-                      <small>{result.Description}</small>
-                    </p>
-                    <div className="bottom flex mt-auto m-3">
-                      <Button size="large" onClick={() => setSelected(-1)}>
-                        Cancel
-                      </Button>
-                      <Button
-                        type="primary"
-                        onClick={handleConfirmClick}
-                        size="large"
-                        className="ml-2 flex-1"
-                      >
-                        Confirm
-                      </Button>
-                    </div>
-                  </motion.div>
-                </li>
+                <RoomResult
+                  key={result.Title}
+                  {...{
+                    result,
+                    handleClick,
+                    index,
+                    scrollviewRef,
+                    setSelected,
+                    handleConfirmClick,
+                    fullWidth,
+                    booking,
+                    retreat,
+                  }}
+                  isSelected={selected === index}
+                />
               )
             })}
           </ul>
         )}
       </div>
     </div>
+  )
+}
+
+const RoomResult = ({
+  result,
+  handleClick,
+  isSelected,
+  index,
+  scrollviewRef,
+  setSelected,
+  handleConfirmClick,
+  fullWidth,
+  booking,
+  retreat,
+}) => {
+  const pRef = useRef()
+  const [expHeight, setExpHeight] = useState(0)
+  useEffect(() => {
+    window.addEventListener('resize', () => {
+      const winHeight = window.innerHeight - 20
+      const calcHeight = pRef.current.clientHeight + 400
+      setExpHeight(calcHeight < winHeight ? winHeight : calcHeight)
+    })
+  }, [])
+  return (
+    <li onClick={handleClick(index)}>
+      <motion.div
+        className={classNames('expander', {
+          expanded: isSelected,
+        })}
+        animate={
+          isSelected
+            ? {
+                x: -20,
+                y:
+                  -index * 208 -
+                  160 +
+                  (scrollviewRef.current != null
+                    ? scrollviewRef.current.scrollTop
+                    : 0),
+                height: expHeight,
+                width: fullWidth - 20,
+                zIndex: 1000,
+              }
+            : {
+                x: 0,
+                y: 0,
+                width: fullWidth - 60,
+                height: 198,
+                zIndex: 0,
+              }
+        }
+        transition={{
+          type: 'spring',
+          stiffness: 220,
+          damping: 20,
+        }}
+      >
+        <div className="gallery">
+          {result.Gallery.data && (
+            <Swiper
+              pagination={true}
+              modules={[Pagination]}
+              className="mySwiper"
+            >
+              {result.Gallery.data
+                .sort((a, b) =>
+                  a.attributes.name < b.attributes.name ? -1 : 1
+                )
+                .map((image) => {
+                  const url = image.attributes.formats.hasOwnProperty('large')
+                    ? image.attributes.formats.large.url
+                    : image.attributes.url
+                  return (
+                    <SwiperSlide key={image.id}>
+                      <Image src={url} alt="g1" fill />
+                    </SwiperSlide>
+                  )
+                })}
+            </Swiper>
+          )}
+        </div>
+        <div className="flex grid grid-cols-12 p-3">
+          <div className="col-span-8 flex flex-col">
+            <h3>{result.Title}</h3>
+            <ul className="feats">
+              <li>{result.Shared ? 'Shared' : 'Private'}</li>
+              <li>Sleeps {result.Beds}</li>
+              <li className="desktop-only">Meals included</li>
+            </ul>
+          </div>
+          <div className="col-span-4 flex flex-col prices text-right">
+            <strong>{calcPrice(result, booking, retreat)}</strong>
+            <small>Final price for {booking.adults + booking.children}</small>
+          </div>
+        </div>
+        <p className="p-3" ref={pRef}>
+          <small>{result.Description}</small>
+        </p>
+        <div className="bottom flex mt-auto m-3">
+          <Button size="large" onClick={() => setSelected(-1)}>
+            Cancel
+          </Button>
+          <Button
+            type="primary"
+            onClick={handleConfirmClick}
+            size="large"
+            className="ml-2 flex-1"
+          >
+            Confirm
+          </Button>
+        </div>
+      </motion.div>
+    </li>
   )
 }
 
