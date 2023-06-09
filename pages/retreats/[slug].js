@@ -364,11 +364,13 @@ const RoomResult = ({
   const pRef = useRef()
   const [expHeight, setExpHeight] = useState(0)
   useEffect(() => {
-    window.addEventListener('resize', () => {
+    const calcSetHeight = () => {
       const winHeight = window.innerHeight - 20
       const calcHeight = pRef.current.clientHeight + 400
       setExpHeight(calcHeight < winHeight ? winHeight : calcHeight)
-    })
+    }
+    calcSetHeight()
+    window.addEventListener('resize', calcSetHeight)
   }, [])
   return (
     <li onClick={handleClick(index)}>
