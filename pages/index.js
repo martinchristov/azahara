@@ -59,17 +59,23 @@ export default function Home() {
               )
             })}
             <h2>Other stays</h2>
-            <div className="retreat card other-stay sm:px-6 sm:pt-8 rounded-lg m-6">
-              <div className="retreat-header flex">
-                <div className="thumb col">
-                  <Image src="/free-booking-icon.jpg" alt="free booking" fill />
-                </div>
-                <div className="col justify-center flex flex-col">
-                  <h1>Free Booking</h1>
-                  <h5>Stay at Azahara outside of retreat dates</h5>
+            <Link href="/retreats/free">
+              <div className="retreat card other-stay sm:px-6 sm:pt-8 rounded-lg m-6">
+                <div className="retreat-header flex">
+                  <div className="thumb col">
+                    <Image
+                      src="/free-booking-icon.jpg"
+                      alt="free booking"
+                      fill
+                    />
+                  </div>
+                  <div className="col justify-center flex flex-col">
+                    <h1>Free Booking</h1>
+                    <h5>Stay at Azahara outside of retreat dates</h5>
+                  </div>
                 </div>
               </div>
-            </div>
+            </Link>
             <a
               target="_blank"
               href="https://docs.google.com/forms/d/e/1FAIpQLSfPr_mWB8WN5xHMwwqeIV7e6gANOuDAWfoDibilcMPxBmqYXw/viewform?pli=1"

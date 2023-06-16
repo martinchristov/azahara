@@ -29,32 +29,36 @@ export default function RetreatView(props) {
   const router = useRouter()
   const retreatsState = useSelector(selectRetreatsState)
   useEffect(() => {
-    if (retreatsState != null && retreatsState.length > 0) {
-      setData(
-        retreatsState.find((item) => item.attributes.Slug === router.query.slug)
-      )
-    } else {
-      // initial fetch all has not been made (view is accessed directly)
-      fetch(
-        `https://azahara-admin.herokuapp.com/api/retreats?filters\[Slug\][$eq]=${router.query.slug}&populate=*`
-      )
-        .then((d) => d.json())
-        .then((d) => {
-          setData(d.data[0])
-        })
-    }
+    if (router.query.slug !== 'free')
+      if (retreatsState != null && retreatsState.length > 0) {
+        setData(
+          retreatsState.find(
+            (item) => item.attributes.Slug === router.query.slug
+          )
+        )
+      } else {
+        // initial fetch all has not been made (view is accessed directly)
+        fetch(
+          `https://azahara-admin.herokuapp.com/api/retreats?filters\[Slug\][$eq]=${router.query.slug}&populate=*`
+        )
+          .then((d) => d.json())
+          .then((d) => {
+            setData(d.data[0])
+          })
+      }
   }, [])
   return (
     <div className="container mx-auto">
       {data && <FullView {...{ data }} />}
+      {router.query.slug === 'free' && <FullView free />}
     </div>
   )
 }
 
-const FullView = ({ data }) => {
+const FullView = ({ data, free }) => {
   const [booking, setBooking] = useState({
-    checkIn: data?.attributes?.Starts,
-    checkOut: data?.attributes?.Ends,
+    checkIn: !free ? data?.attributes?.Starts : undefined,
+    checkOut: !free ? data?.attributes?.Ends : undefined,
     adults: 1,
     children: 0,
     room: null,
@@ -68,7 +72,7 @@ const FullView = ({ data }) => {
     })
     setWidth(window.innerWidth)
   }, [])
-  if (!data) {
+  if (!data && !free) {
     return <div>Loading...</div>
   }
   const handleUpdateBooking = (field) => (value) => {
@@ -109,14 +113,18 @@ const FullView = ({ data }) => {
                     <LeftOutlined />
                   </Button>
                 </Link>
-                <h5>Retreat booking</h5>
+                {!free ? <h5>Retreat Booking</h5> : <h5>Back to retreats</h5>}
               </div>
-              <RetreatHeader data={data.attributes} />
+              <RetreatHeader free={free} data={data?.attributes} />
               <div className="mt-6 full-details">
-                <div className="desc">
-                  <Markdown>{data.attributes.Description}</Markdown>
-                </div>
-                <hr />
+                {!free && (
+                  <>
+                    <div className="desc">
+                      <Markdown>{data.attributes.Description}</Markdown>
+                    </div>
+                    <hr />
+                  </>
+                )}
                 <h3>Booking Details</h3>
                 <div className="flex grid grid-flow-col auto-rows-max gap-x-1.5">
                   <div className="flex flex-col">
@@ -125,7 +133,11 @@ const FullView = ({ data }) => {
                       size="large"
                       allowClear={false}
                       inputReadOnly
-                      value={dayjs(booking.checkIn, 'YYYY-MM-DD')}
+                      value={
+                        booking.checkIn
+                          ? dayjs(booking.checkIn, 'YYYY-MM-DD')
+                          : null
+                      }
                       disabledDate={(date) =>
                         date.valueOf() < now.valueOf() ||
                         date.valueOf() > dayjs(booking.checkOut, 'YYYY-MM-DD')
@@ -140,7 +152,11 @@ const FullView = ({ data }) => {
                       size="large"
                       allowClear={false}
                       inputReadOnly
-                      value={dayjs(booking.checkOut, 'YYYY-MM-DD')}
+                      value={
+                        booking.checkOut
+                          ? dayjs(booking.checkOut, 'YYYY-MM-DD')
+                          : null
+                      }
                       disabledDate={(date) =>
                         date.valueOf() < dayjs(booking.checkIn, 'YYYY-MM-DD')
                       }
@@ -231,16 +247,18 @@ const FullView = ({ data }) => {
               step,
               booking,
               setBooking,
-              retreat: data.attributes,
+              free,
+              retreat: data?.attributes,
             }}
           />
           <CheckoutView
             {...{
               setStep,
               step,
-              data: data.attributes,
+              data: data?.attributes,
               booking,
-              retreat: data.attributes,
+              free,
+              retreat: data?.attributes,
               calcPrice,
             }}
           />
@@ -466,7 +484,10 @@ const RoomResult = ({
 }
 
 const calcPrice = (room, booking, retreat, isDeposit) => {
-  let price = room.bookingPrice + retreat.Price * booking.adults
+  let price = room.bookingPrice
+  if (retreat) {
+    price += retreat.Price * booking.adults
+  }
   if (isDeposit) price = price / 2
   return `€${price.toFixed(2)}`
 }

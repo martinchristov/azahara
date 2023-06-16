@@ -14,7 +14,15 @@ import RetreatHeader from './header'
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY)
 
-const CheckoutView = ({ setStep, data, booking, retreat, calcPrice, step }) => {
+const CheckoutView = ({
+  setStep,
+  data,
+  booking,
+  retreat,
+  calcPrice,
+  step,
+  free,
+}) => {
   const [form] = Form.useForm()
   const [clientSecret, setClientSecret] = useState()
   useEffect(() => {
@@ -47,9 +55,9 @@ const CheckoutView = ({ setStep, data, booking, retreat, calcPrice, step }) => {
           >
             <LeftOutlined />
           </Button>
-          <h5>Retreat Booking</h5>
+          <h5>Checkout</h5>
         </div>
-        <RetreatHeader data={data} />
+        <RetreatHeader free={free} data={data} />
         <hr />
         <h4>Booking Details</h4>
         {booking && (

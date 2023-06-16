@@ -1,7 +1,20 @@
 import Image from 'next/image'
 import dayjs from 'dayjs'
 
-const RetreatHeader = ({ data }) => {
+const RetreatHeader = ({ data, free }) => {
+  if (free) {
+    return (
+      <div className="retreat-header flex">
+        <div className="thumb col">
+          <Image src="/free-booking-icon.jpg" alt="free booking" fill />
+        </div>
+        <div className="col justify-center flex flex-col">
+          <h1>Free Booking</h1>
+          <h5>Stay at Azahara outside of retreat dates</h5>
+        </div>
+      </div>
+    )
+  }
   return (
     <div className="flex retreat-header">
       <div className="thumb col">
