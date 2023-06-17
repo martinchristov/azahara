@@ -99,6 +99,14 @@ main {
       border-radius: 7px;
     }
   }
+  &.free {
+    .thumb {
+      height: 83px;
+      img {
+        border: none;
+      }
+    }
+  }
   color: $primary;
   .date {
     background-color: #956123;
@@ -271,6 +279,9 @@ ul.feats {
     .next-btn {
       margin-top: auto;
       background-color: $primary;
+      &:disabled {
+        background-color: #fff;
+      }
       &:hover {
         background-color: lighten($primary, 30%);
       }

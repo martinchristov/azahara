@@ -274,6 +274,7 @@ const RoomsView = ({ setStep, step, booking, setBooking, retreat }) => {
   const [loading, setLoading] = useState(true)
   const [results, setResults] = useState([])
   const prevStep = useRef()
+  const router = useRouter()
   const handleClick = (index) => () => {
     if (selected === -1) {
       setSelected(index)
@@ -291,6 +292,34 @@ const RoomsView = ({ setStep, step, booking, setBooking, retreat }) => {
     }
     prevStep.current = step
   }, [step])
+  useEffect(() => {
+    router.beforePopState(({ as }) => {
+      if (as !== router.asPath) {
+        // Will run when leaving the current page; on back/forward actions
+        // Add your logic here, like toggling the modal state
+        setSelected((_selected) => {
+          if (_selected !== -1) {
+            window.history.pushState(null, '', router.asPath)
+            return -1
+          }
+          setStep((_step) => {
+            if (_step === 2) {
+              window.history.pushState(null, '', router.asPath)
+              return 1
+            }
+            return _step
+          })
+          return _selected
+        })
+        return false
+      }
+      return true
+    })
+
+    return () => {
+      router.beforePopState(() => true)
+    }
+  }, [router])
   const handleConfirmClick = () => {
     setBooking({
       ...booking,
@@ -341,25 +370,28 @@ const RoomsView = ({ setStep, step, booking, setBooking, retreat }) => {
         )}
         {!loading && (
           <ul className="results">
-            {results.map((result, index) => {
-              return (
-                <RoomResult
-                  key={result.Title}
-                  {...{
-                    result,
-                    handleClick,
-                    index,
-                    scrollviewRef,
-                    setSelected,
-                    handleConfirmClick,
-                    fullWidth,
-                    booking,
-                    retreat,
-                  }}
-                  isSelected={selected === index}
-                />
-              )
-            })}
+            {results
+              .filter((result) => result.available)
+              .sort((a, b) => a.bookingPrice - b.bookingPrice)
+              .map((result, index) => {
+                return (
+                  <RoomResult
+                    key={result.Title}
+                    {...{
+                      result,
+                      handleClick,
+                      index,
+                      scrollviewRef,
+                      setSelected,
+                      handleConfirmClick,
+                      fullWidth,
+                      booking,
+                      retreat,
+                    }}
+                    isSelected={selected === index}
+                  />
+                )
+              })}
           </ul>
         )}
       </div>
@@ -489,6 +521,7 @@ const calcPrice = (room, booking, retreat, isDeposit) => {
     price += retreat.Price * booking.adults
   }
   if (isDeposit) price = price / 2
+  if (!price) return ''
   return `€${price.toFixed(2)}`
 }
 

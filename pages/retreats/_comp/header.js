@@ -1,10 +1,11 @@
 import Image from 'next/image'
 import dayjs from 'dayjs'
+import classNames from 'classnames'
 
 const RetreatHeader = ({ data, free }) => {
   if (free) {
     return (
-      <div className="retreat-header flex">
+      <div className={classNames('retreat-header flex', { free })}>
         <div className="thumb col">
           <Image src="/free-booking-icon.jpg" alt="free booking" fill />
         </div>
