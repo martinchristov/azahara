@@ -262,6 +262,11 @@ const FullView = ({ data, free }) => {
               calcPrice,
             }}
           />
+          <div className="thankyou view">
+            <div className="inner rounded-lg flex flex-col">
+              <h1>Booking Confirmed</h1>
+            </div>
+          </div>
         </motion.div>
       </div>
     </>
@@ -515,14 +520,15 @@ const RoomResult = ({
   )
 }
 
-const calcPrice = (room, booking, retreat, isDeposit) => {
+const calcPrice = (room, booking, retreat, isDeposit, isString = true) => {
   let price = room.bookingPrice
   if (retreat) {
     price += retreat.Price * booking.adults
   }
   if (isDeposit) price = price / 2
   if (!price) return ''
-  return `€${price.toFixed(2)}`
+  if (isString) return `€${price.toFixed(2)}`
+  return price
 }
 
 const Amount = ({ value = 1, min = 0, onChange }) => {
