@@ -265,6 +265,12 @@ const FullView = ({ data, free }) => {
           <div className="thankyou view">
             <div className="inner rounded-lg flex flex-col">
               <h1>Booking Confirmed</h1>
+              <p>
+                Thank you for your booking!
+                <br />
+                You will also receive an email confirmation. Looking forward to
+                see you soon inshaAllah!
+              </p>
             </div>
           </div>
         </motion.div>

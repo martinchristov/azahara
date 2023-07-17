@@ -33,7 +33,7 @@ const CheckoutView = ({
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           booking,
-          amount: calcPrice(booking.room, booking, retreat, true, false),
+          amount: calcPrice(booking.room, booking, retreat, true, false) * 100,
         }),
       })
         .then((res) => res.json())
@@ -185,10 +185,12 @@ const CheckoutForm = ({ booking, retreat, form, clientSecret, setStep }) => {
       setError(null)
       setProcessing(false)
       setSucceeded(true)
+      const payload = { booking, retreat, details, clientSecret }
+      delete retreat.Description
       fetch('/api/confirmation', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ booking, retreat, details, clientSecret }),
+        body: JSON.stringify(payload),
       })
         .then((res) => res.json())
         .then(() => {
