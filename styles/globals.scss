@@ -525,17 +525,64 @@ ul.feats {
   }
 }
 .thankyou.view {
+  display: flex;
+  // flex-direction: row;
+  // justify-content: center;
   & > div {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    // background-color: rgba(255, 255, 255, 0.8);
+    text-align: center;
+    .center {
+      max-width: 320px;
+      margin-left: auto;
+      margin-right: auto;
+      text-align: center;
+    }
+  }
+  .confirm-details {
+    background-color: #efe4d2;
+    color: #000;
+    text-align: left;
+    padding: 2px 0;
+    border-radius: 5px;
+    margin-bottom: 15px;
+    .row {
+      display: flex;
+      margin: 10px 15px;
+    }
+    .col {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      span {
+        text-transform: uppercase;
+        font-size: 14px;
+        opacity: 0.6;
+        font-weight: 600;
+      }
+      div {
+        font-weight: 600;
+        font-size: 16px;
+      }
+    }
   }
   h1 {
     font-size: 32px;
-    color: #fff;
+    line-height: 40px;
+    margin-bottom: 15px;
+    color: #efe4d2;
     font-weight: bold;
+    max-width: 200px;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
     text-transform: uppercase;
+  }
+  p {
+    color: #efe4d2;
+    font-weight: 600;
+    font-size: 18px;
   }
 }
 .nav-heading {

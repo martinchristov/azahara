@@ -17,7 +17,7 @@ export default async function handler(req, res) {
     `,
   })
   await sendgrid.send({
-    to: 'cortijoazahara1@gmail.com',
+    to: 'azahara.bookings@gmail.com',
     from: 'azahara-bookings@almubeen.app', // your website email address here
     subject: `New Booking (system test)`,
     html: `

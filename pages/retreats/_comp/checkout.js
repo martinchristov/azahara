@@ -185,8 +185,13 @@ const CheckoutForm = ({ booking, retreat, form, clientSecret, setStep }) => {
       setError(null)
       setProcessing(false)
       setSucceeded(true)
-      const payload = { booking, retreat, details, clientSecret }
-      delete retreat.Description
+      const payload = {
+        booking,
+        retreat: { ...retreat },
+        details,
+        clientSecret,
+      }
+      delete payload.retreat.Description
       fetch('/api/confirmation', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

@@ -264,13 +264,57 @@ const FullView = ({ data, free }) => {
           />
           <div className="thankyou view">
             <div className="inner rounded-lg flex flex-col">
-              <h1>Booking Confirmed</h1>
-              <p>
-                Thank you for your booking!
-                <br />
-                You will also receive an email confirmation. Looking forward to
-                see you soon inshaAllah!
-              </p>
+              <div className="center">
+                <h1>Booking Confirmed</h1>
+                <div className="confirm-details">
+                  <div className="row">
+                    <div className="col">
+                      <span>check-in</span>
+                      <div>
+                        {dayjs(booking.checkIn, 'YYYY-MM-DD').format('D MMMM')}
+                      </div>
+                    </div>
+                    <div className="col">
+                      <span>check-out</span>
+                      <div>
+                        {dayjs(booking.checkOut, 'YYYY-MM-DD').format('D MMMM')}
+                      </div>
+                    </div>
+                  </div>
+                  <div className="row">
+                    <div className="col">
+                      <span>guests</span>
+                      <div>{booking.adults + booking.children}</div>
+                    </div>
+                    <div className="col">
+                      <span>payment</span>
+                      <div>
+                        {calcPrice(
+                          booking.room,
+                          booking,
+                          data?.attributes,
+                          true
+                        )}{' '}
+                        <small>due on arrival</small>
+                      </div>
+                    </div>
+                  </div>
+                  {data && (
+                    <div className="row">
+                      <div className="col">
+                        <span>event</span>
+                        <div>{data.attributes.Title}</div>
+                      </div>
+                    </div>
+                  )}
+                </div>
+                <p>
+                  Thank you for your booking!
+                  <br />
+                  You will also receive an email confirmation. Looking forward
+                  to see you soon inshaAllah!
+                </p>
+              </div>
             </div>
           </div>
         </motion.div>
@@ -527,6 +571,7 @@ const RoomResult = ({
 }
 
 const calcPrice = (room, booking, retreat, isDeposit, isString = true) => {
+  if (!room) return null
   let price = room.bookingPrice
   if (retreat) {
     price += retreat.Price * booking.adults
