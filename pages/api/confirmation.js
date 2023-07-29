@@ -1,10 +1,26 @@
+import dayjs from 'dayjs'
 import sendgrid from '@sendgrid/mail'
 sendgrid.setApiKey(process.env.SENDGRID_API_KEY)
 
+const { google } = require('googleapis')
+
+const jwtClient = new google.auth.JWT(
+  process.env.GOOGLE_CLIENT_EMAIL,
+  null,
+  process.env.GOOGLE_PRIVATE_KEY.split(String.raw`\n`).join('\n'),
+  [
+    'https://www.googleapis.com/auth/calendar',
+    'https://www.googleapis.com/auth/calendar.events',
+  ]
+)
+const calendar = google.calendar({
+  version: 'v3',
+  project: process.env.GOOGLE_PROJECT_NUMBER,
+  auth: jwtClient,
+})
+
 export default async function handler(req, res) {
   const { booking, retreat, details } = req.body
-  console.log(booking, retreat, details)
-  console.log('SEND EMAILS HERE')
   // booking.pickup == false ? -> add info
   await sendgrid.send({
     to: details.email,
@@ -34,5 +50,34 @@ export default async function handler(req, res) {
     </p>
     `,
   })
+  // CREATE EVENT IN CALENDAR
+  let eventCount = 1
+  if (booking.room.shared) {
+    eventCount = booking.adults + booking.children
+  }
+  for (let i = 0; i < eventCount; i += 1) {
+    let summary = `${details.name}`
+    if (i > 0) {
+      summary = `${summary} person ${i + 1}`
+    }
+    await calendar.events.insert({
+      calendarId: booking.room.calendarID,
+      sendNotifications: false,
+      requestBody: {
+        start: {
+          dateTime: dayjs(`${booking.checkIn} 12:00`).toISOString(),
+          timeZone: 'Europe/Madrid',
+        },
+        end: {
+          dateTime: dayjs(`${booking.checkOut} 12:00`).toISOString(),
+          timeZone: 'Europe/Madrid',
+        },
+        summary,
+        description: `${details.name} (${details.email}) ${
+          retreat ? `for ${retreat.Title}` : 'free booking'
+        }`,
+      },
+    })
+  }
   res.send({ ok: true })
 }

@@ -82,7 +82,7 @@ const FullView = ({ data, free }) => {
     setBooking($booking)
   }
   const now = dayjs()
-
+  console.log(booking)
   return (
     <>
       <div className="absolute">
@@ -325,14 +325,16 @@ const FullView = ({ data, free }) => {
 
 const RoomsView = ({ setStep, step, booking, setBooking, retreat }) => {
   const scrollviewRef = useRef()
-  const [selected, setSelected] = useState(-1)
+  const [selectedIndex, setSelectedIndex] = useState(-1)
+  const [selectedRoom, setSelectedRoom] = useState(null)
   const [loading, setLoading] = useState(true)
   const [results, setResults] = useState([])
   const prevStep = useRef()
   const router = useRouter()
-  const handleClick = (index) => () => {
-    if (selected === -1) {
-      setSelected(index)
+  const handleClick = (index, room) => () => {
+    if (selectedIndex === -1) {
+      setSelectedIndex(index)
+      setSelectedRoom(room)
     }
   }
   useEffect(() => {
@@ -352,7 +354,7 @@ const RoomsView = ({ setStep, step, booking, setBooking, retreat }) => {
       if (as !== router.asPath) {
         // Will run when leaving the current page; on back/forward actions
         // Add your logic here, like toggling the modal state
-        setSelected((_selected) => {
+        setSelectedIndex((_selected) => {
           if (_selected !== -1) {
             window.history.pushState(null, '', router.asPath)
             return -1
@@ -379,9 +381,10 @@ const RoomsView = ({ setStep, step, booking, setBooking, retreat }) => {
     setBooking({
       ...booking,
       room: {
-        calendarID: results[selected].Calendar_ID,
-        title: results[selected].Title,
-        bookingPrice: results[selected].bookingPrice,
+        calendarID: selectedRoom.Calendar_ID,
+        title: selectedRoom.Title,
+        bookingPrice: selectedRoom.bookingPrice,
+        shared: selectedRoom.Shared,
       },
     })
     setStep(3)
@@ -389,7 +392,9 @@ const RoomsView = ({ setStep, step, booking, setBooking, retreat }) => {
   const fullWidth = window.innerWidth > 720 ? 630 : window.innerWidth
   return (
     <div
-      className={classNames('rooms-view view', { scrollLock: selected !== -1 })}
+      className={classNames('rooms-view view', {
+        scrollLock: selectedIndex !== -1,
+      })}
       ref={scrollviewRef}
     >
       <div className="inner rounded-lg flex flex-col">
@@ -406,14 +411,14 @@ const RoomsView = ({ setStep, step, booking, setBooking, retreat }) => {
         </div>
         {/* <h4>Choose Accommodation</h4> */}
         <AnimatePresence>
-          {selected !== -1 && step === 2 && (
+          {selectedIndex !== -1 && step === 2 && (
             <motion.div
               className="dimmer"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => {
-                setSelected(-1)
+                setSelectedIndex(-1)
               }}
             />
           )}
@@ -437,13 +442,13 @@ const RoomsView = ({ setStep, step, booking, setBooking, retreat }) => {
                       handleClick,
                       index,
                       scrollviewRef,
-                      setSelected,
+                      setSelectedIndex,
                       handleConfirmClick,
                       fullWidth,
                       booking,
                       retreat,
                     }}
-                    isSelected={selected === index}
+                    isSelected={selectedIndex === index}
                   />
                 )
               })}
@@ -460,7 +465,7 @@ const RoomResult = ({
   isSelected,
   index,
   scrollviewRef,
-  setSelected,
+  setSelectedIndex,
   handleConfirmClick,
   fullWidth,
   booking,
@@ -478,7 +483,7 @@ const RoomResult = ({
     window.addEventListener('resize', calcSetHeight)
   }, [])
   return (
-    <li onClick={handleClick(index)}>
+    <li onClick={handleClick(index, result)}>
       <motion.div
         className={classNames('expander', {
           expanded: isSelected,
@@ -553,7 +558,7 @@ const RoomResult = ({
           <small>{result.Description}</small>
         </p>
         <div className="bottom flex mt-auto m-3">
-          <Button size="large" onClick={() => setSelected(-1)}>
+          <Button size="large" onClick={() => setSelectedIndex(-1)}>
             Cancel
           </Button>
           <Button
