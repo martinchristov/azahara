@@ -29,6 +29,11 @@ export default async function handler(req, res) {
     html: `
     <h2>Ahlan Ahlan!</h2>
     <p>Your booking has been confirmed.</p>
+    <p>
+    Check In: ${booking.checkIn}<br />
+    Check Out: ${booking.checkOut}<br />
+    Room: ${booking.room.title}<br />
+    Guests: ${booking.adults} adults ${booking.children > 0 && `${booking.children} children`}<br />
     <p>See you soon inshaAllah!</p>
     `,
   })
