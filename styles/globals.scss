@@ -205,10 +205,13 @@ ul.feats {
   }
 }
 
-.retreat.full.view {
+.retreat.view {
   &.full {
     .back-btn {
       // margin-top: -15px;
+    }
+    .retreat-header {
+      margin-top: 10px;
     }
     hr {
       margin: 1.3em 0;
@@ -609,6 +612,9 @@ ul.feats {
     font-weight: 500;
     transform: translateY(3px);
     color: $primary;
+    flex: 1;
+    padding-right: 50px;
+    text-align: center;
   }
 }
 .back-btn {

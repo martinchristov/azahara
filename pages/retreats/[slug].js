@@ -50,12 +50,14 @@ export default function RetreatView(props) {
   return (
     <div className="container mx-auto">
       {data && <FullView {...{ data }} />}
-      {router.query.slug === 'free' && <FullView free />}
+      {router.query.slug === 'free' && (
+        <FullView free lock={router.query.lock} />
+      )}
     </div>
   )
 }
 
-const FullView = ({ data, free }) => {
+const FullView = ({ data, free, lock }) => {
   const [booking, setBooking] = useState({
     checkIn: !free ? data?.attributes?.Starts : undefined,
     checkOut: !free ? data?.attributes?.Ends : undefined,
@@ -82,7 +84,6 @@ const FullView = ({ data, free }) => {
     setBooking($booking)
   }
   const now = dayjs()
-  console.log(booking)
   return (
     <>
       <div className="absolute">
@@ -102,19 +103,21 @@ const FullView = ({ data, free }) => {
         >
           <div className="retreat view full">
             <div className="inner rounded-lg flex flex-col">
-              <div className="flex relative mt-3 nav-heading">
-                <Link href="/">
-                  <Button
-                    onClick={() => setStep(1)}
-                    type="link"
-                    size="large"
-                    className="back-btn"
-                  >
-                    <LeftOutlined />
-                  </Button>
-                </Link>
-                {!free ? <h5>Retreat Booking</h5> : <h5>Back to retreats</h5>}
-              </div>
+              {!lock && (
+                <div className="flex relative mt-3 nav-heading">
+                  <Link href="/">
+                    <Button
+                      onClick={() => setStep(1)}
+                      type="link"
+                      size="large"
+                      className="back-btn"
+                    >
+                      <LeftOutlined />
+                    </Button>
+                  </Link>
+                  {!free ? <h5>Retreat Booking</h5> : <h5>Free Booking</h5>}
+                </div>
+              )}
               <RetreatHeader free={free} data={data?.attributes} />
               <div className="mt-6 full-details">
                 {!free && (
