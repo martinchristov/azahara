@@ -193,10 +193,12 @@ const FullView = ({ data, free }) => {
                     )}{' '}
                     Nights
                   </li>
-                  <li>
-                    <Image src="/meal.svg" alt="bed" width={18} height={18} />{' '}
-                    Meals Included
-                  </li>
+                  {!free && (
+                    <li>
+                      <Image src="/meal.svg" alt="bed" width={18} height={18} />{' '}
+                      Meals Included
+                    </li>
+                  )}
                 </ul>
                 <hr />
                 <div className="transportation">
@@ -546,7 +548,9 @@ const RoomResult = ({
             <ul className="feats">
               <li>{result.Shared ? 'Shared' : 'Private'}</li>
               <li>Sleeps {result.Beds}</li>
-              <li className="desktop-only">Meals included</li>
+              {retreat != null && (
+                <li className="desktop-only">Meals included</li>
+              )}
             </ul>
           </div>
           <div className="col-span-4 flex flex-col prices text-right">

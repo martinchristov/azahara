@@ -93,20 +93,22 @@ const CheckoutView = ({
                       {booking.room.title}
                     </strong>
                   </li>
-                  <li>
-                    <span>Extras</span>
-                    <ul className="feats">
-                      <li>
-                        <Image
-                          src="/meal.svg"
-                          alt="bed"
-                          width={18}
-                          height={18}
-                        />{' '}
-                        Meals Included
-                      </li>
-                    </ul>
-                  </li>
+                  {!free && (
+                    <li>
+                      <span>Extras</span>
+                      <ul className="feats">
+                        <li>
+                          <Image
+                            src="/meal.svg"
+                            alt="bed"
+                            width={18}
+                            height={18}
+                          />{' '}
+                          Meals Included
+                        </li>
+                      </ul>
+                    </li>
+                  )}
                   <li className="total">
                     <span>Total amount due</span>
                     <strong>{calcPrice(booking.room, booking, retreat)}</strong>
