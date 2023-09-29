@@ -10,7 +10,7 @@ const RetreatHeader = ({ data, free }) => {
           <Image src="/free-booking-icon.jpg" alt="free booking" fill />
         </div>
         <div className="col justify-center flex flex-col">
-          <h1>Free Booking</h1>
+          <h1>Book Your Stay</h1>
           <h5>Stay at Azahara outside of retreat dates</h5>
         </div>
       </div>

@@ -115,7 +115,7 @@ const FullView = ({ data, free, lock }) => {
                       <LeftOutlined />
                     </Button>
                   </Link>
-                  {!free ? <h5>Retreat Booking</h5> : <h5>Free Booking</h5>}
+                  {!free ? <h5>Retreat Booking</h5> : <h5>Book Your Stay</h5>}
                 </div>
               )}
               <RetreatHeader free={free} data={data?.attributes} />
